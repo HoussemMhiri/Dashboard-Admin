@@ -1,22 +1,104 @@
 <template>
-  <div class="mb-3">
-    <label for="exampleFormControlInput8" class="form-label"
-      >Switch Name:</label
-    >
-    <input type="text" class="form-control" id="exampleFormControlInput8" />
-  </div>
-  <div class="mb-3">
-    <label for="exampleFormControlInput9" class="form-label">Inerface:</label>
-    <input type="text" class="form-control" id="exampleFormControlInput9" />
-  </div>
-  <div class="mb-3">
-    <label for="exampleFormControlInput10" class="form-label">VLAN:</label>
-    <input type="text" class="form-control" id="exampleFormControlInput10" />
-  </div>
+  <form @submit.prevent="addSwitch">
+    <div class="mb-3">
+      <label for="exampleFormControlInput8" class="form-label"
+        >Switch Name:</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput8"
+        v-model="sw"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput8" class="form-label">Customer:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput8"
+        v-model="cust"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput9" class="form-label">Inerface:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput9"
+        v-model="inter"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput10" class="form-label">VLAN:</label>
+      <input
+        type="number"
+        class="form-control"
+        id="exampleFormControlInput10"
+        v-model="vl"
+      />
+    </div>
+    <div class="w-100">
+      <button class="btn btn-primary w-100" type="submit">Submit</button>
+    </div>
+  </form>
 </template>
 
 <script>
-export default {};
+import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
+import { db } from "@/firebase";
+export default {
+  data() {
+    return {
+      sw: "",
+      cust: "",
+      inter: "",
+      vl: "",
+    };
+  },
+
+  methods: {
+    async addSwitch() {
+      const datasetRef = collection(db, "dataset");
+      const routerDocRef = doc(datasetRef, this.sw);
+
+      try {
+        // Check if the document exists
+        const docSnapshot = await getDoc(routerDocRef);
+
+        if (docSnapshot.exists()) {
+          // Document exists, create a subcollection with the name of VRF_Names
+          const vrfNameSubcollectionRef = collection(routerDocRef, this.cust);
+
+          // Add additional information to the subcollection
+          await addDoc(vrfNameSubcollectionRef, {
+            interface: this.inter,
+            vlan: this.vl,
+          });
+        } else {
+          // Document does not exist, create it and add the provided information
+          await setDoc(routerDocRef, {});
+
+          // Create a subcollection with the name of VRF_Names
+          const vrfNameSubcollectionRef = collection(routerDocRef, this.cust);
+
+          // Add additional information to the subcollection
+          await addDoc(vrfNameSubcollectionRef, {
+            interface: this.inter,
+            vlan: this.vl,
+          });
+        }
+
+        this.sw = "";
+        this.cust = "";
+        this.inter = "";
+        this.vl = "";
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+};
 </script>
 
 <style scopd>

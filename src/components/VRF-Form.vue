@@ -180,16 +180,13 @@ export default {
           });
         }
 
-        // Clear input fields after adding the data
         this.VRF_Names = "";
         this.Rds = "";
         this.RT_Exports = "";
         this.RT_Imports = "";
         this.router = "";
-
-        console.log("Data added successfully!");
       } catch (error) {
-        console.error("Error adding data:", error);
+        console.error(error);
       }
     },
   },

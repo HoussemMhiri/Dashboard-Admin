@@ -1,30 +1,93 @@
 <template>
-  <div class="mb-3">
-    <label for="exampleFormControlInput11" class="form-label">CE Router:</label>
-    <input type="text" class="form-control" id="exampleFormControlInput11" />
-  </div>
-  <div class="mb-3">
-    <label for="exampleFormControlInput12" class="form-label">Interface:</label>
-    <input type="text" class="form-control" id="exampleFormControlInput12" />
-  </div>
-  <div class="mb-3">
-    <label for="exampleFormControlInput13" class="form-label"
-      >IP Address:</label
-    >
-    <input type="text" class="form-control" id="exampleFormControlInput13" />
-  </div>
-  <div class="mb-3">
-    <label for="exampleFormControlInput14" class="form-label">Mask:</label>
-    <input type="text" class="form-control" id="exampleFormControlInput14" />
-  </div>
-  <div class="mb-3">
-    <label for="exampleFormControlInput15" class="form-label">OSPF:</label>
-    <input type="text" class="form-control" id="exampleFormControlInput15" />
-  </div>
+  <form @submit.prevent="addCE">
+    <div class="mb-3">
+      <label for="exampleFormControlInput11" class="form-label"
+        >CE Router:</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput11"
+        v-model="ce"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput12" class="form-label"
+        >Interface:</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput12"
+        v-model="inter"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput13" class="form-label"
+        >IP Address:</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput13"
+        v-model="ip"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput14" class="form-label">Mask:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput14"
+        v-model="mask"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput15" class="form-label">OSPF:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput15"
+        v-model="ospf"
+      />
+    </div>
+    <div class="w-100">
+      <button class="btn btn-primary w-100">Submit</button>
+    </div>
+  </form>
 </template>
 
 <script>
-export default {};
+import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
+import { db } from "@/firebase";
+export default {
+  data() {
+    return {
+      ce: "",
+      inter: "",
+      ip: "",
+      mask: "",
+      ospf: "",
+    };
+  },
+  methods: {
+    async addCE() {
+      setDoc(doc(db, "dataset", this.ce), {
+        ce_router: this.ce,
+        interface: this.inter,
+        ip_address: this.ip,
+        mask: this.mask,
+        ospf: this.ospf,
+      });
+
+      this.ce = "";
+      this.inter = "";
+      this.ip = "";
+      this.mask = "";
+      this.ospf = "";
+    },
+  },
+};
 </script>
 
 <style scopd>

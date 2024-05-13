@@ -3,9 +3,6 @@
     <h1 class="text-center m-4">{{ title }}</h1>
     <div class="w-75 m-auto 0">
       <component :is="currentForm" />
-      <div class="w-100">
-        <button class="btn btn-primary w-100">Submit</button>
-      </div>
     </div>
   </div>
 </template>
