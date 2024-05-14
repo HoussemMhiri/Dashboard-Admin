@@ -25,6 +25,8 @@
             id="exampleFormControlInput1"
             v-model="VRF_Names"
           />
+
+          <p class="text-danger pt-3">{{ errMsg }}</p>
         </div>
         <div class="mb-3">
           <label for="exampleFormControlInput2" class="form-label">RD:</label>
@@ -104,7 +106,14 @@
 </template>
 
 <script>
-import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  setDoc,
+  doc,
+  getDoc,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "@/firebase";
 
 export default {
@@ -118,6 +127,8 @@ export default {
       RT_Exports: "",
       RT_Imports: "",
       router: "",
+
+      errMsg: "",
     };
   },
   methods: {
@@ -141,7 +152,7 @@ export default {
       this.router = "";
     }, */
 
-    async addVRF() {
+    /*     async addVRF() {
       const datasetRef = collection(db, "dataset");
       const routerDocRef = doc(datasetRef, this.router);
 
@@ -180,6 +191,63 @@ export default {
           });
         }
 
+        this.VRF_Names = "";
+        this.Rds = "";
+        this.RT_Exports = "";
+        this.RT_Imports = "";
+        this.router = "";
+      } catch (error) {
+        console.error(error);
+      }
+    }, */
+
+    async addVRF() {
+      const datasetRef = collection(db, "dataset");
+      const routerDocRef = doc(datasetRef, this.router);
+
+      try {
+        // Check if the document exists
+        const docSnapshot = await getDoc(routerDocRef);
+
+        if (docSnapshot.exists()) {
+          // Document exists, check if VRF name subcollection exists
+          const vrfNameSubcollectionRef = collection(
+            routerDocRef,
+            this.VRF_Names
+          );
+          const vrfNameSnapshot = await getDocs(vrfNameSubcollectionRef);
+
+          if (vrfNameSnapshot.size > 0) {
+            // VRF name subcollection exists, set error message
+            this.errMsg = "This VRF Name is already exist";
+            return; // Exit the function
+          } else {
+            // VRF name subcollection doesn't exist, create it
+            await addDoc(vrfNameSubcollectionRef, {
+              RD: this.Rds,
+              RT_Export: this.RT_Exports,
+              RT_Import: this.RT_Imports,
+            });
+          }
+        } else {
+          // Document does not exist, create it and add the provided information
+          await setDoc(routerDocRef, {});
+
+          // Create a subcollection with the name of VRF_Names
+          const vrfNameSubcollectionRef = collection(
+            routerDocRef,
+            this.VRF_Names
+          );
+
+          // Add additional information to the subcollection
+          await addDoc(vrfNameSubcollectionRef, {
+            RD: this.Rds,
+            RT_Export: this.RT_Exports,
+            RT_Import: this.RT_Imports,
+          });
+        }
+
+        // Reset input values
         this.VRF_Names = "";
         this.Rds = "";
         this.RT_Exports = "";
