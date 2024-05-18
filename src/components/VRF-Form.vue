@@ -101,6 +101,8 @@
 
       <!--    </form> -->
     </div>
+
+    {{ dataToPost }}
   </div>
 </template>
 
@@ -130,12 +132,13 @@ export default {
 
       errMsg: "",
       dataToPost: {
-        name: this.VRF_Names,
-        rd: this.Rds,
-        rt_export: this.RT_Exports,
-        rt_import: this.RT_Imports,
-        intf: "1",
-        addr: "2",
+        hostname: "",
+        vrfName: "",
+        rd: "",
+        rt_export: "",
+        rt_import: "",
+        intf: 12,
+        addr: 15,
       },
     };
   },
@@ -161,6 +164,15 @@ export default {
 
     async postData() {
       try {
+        this.dataToPost = {
+          hostname: this.router,
+          vrfName: this.VRF_Names,
+          rd: this.Rds,
+          rt_export: this.RT_Exports,
+          rt_import: this.RT_Imports,
+          intf: 12,
+          addr: 15,
+        };
         const response = await axios.post(
           "http://127.0.0.1:5000/addConfig",
           this.dataToPost,
@@ -172,10 +184,7 @@ export default {
         );
         console.log(response.data);
       } catch (error) {
-        console.error(
-          "Error during Axios POST request:",
-          error.response ? error.response.data : error.message
-        );
+        console.log(error);
       }
     },
 
