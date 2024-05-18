@@ -28,3 +28,7 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+
+# Local proxy config (vue-cli-plugin-proxy)
+proxy.config.local.js

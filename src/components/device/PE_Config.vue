@@ -76,7 +76,17 @@
 </template>
 
 <script>
-import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  setDoc,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  query,
+  limit,
+} from "firebase/firestore";
 import { db } from "@/firebase";
 export default {
   data() {
@@ -101,36 +111,36 @@ export default {
         const docSnapshot = await getDoc(routerDocRef);
 
         if (docSnapshot.exists()) {
-          const routerData = docSnapshot.data();
+          // Document exists, proceed to find or add to subcollection
+          const vrfName = this.VRF_Names;
 
-          // Check if a subcollection with the provided VRF name exists within the document
-          if (routerData && routerData[this.VRF_Names]) {
-            // Subcollection with the provided VRF name exists, update the existing document and subcollection
+          // Create a reference to the subcollection with the provided VRF name
+          const vrfNameSubcollectionRef = collection(routerDocRef, vrfName);
 
-            // Get a reference to the existing subcollection
-            const vrfNameSubcollectionRef = collection(
-              routerDocRef,
-              this.VRF_Names
-            );
+          // Construct a query to efficiently retrieve existing documents
+          const existingDocQuery = query(vrfNameSubcollectionRef, limit(1));
 
-            // Add additional information to the existing subcollection
-            await addDoc(vrfNameSubcollectionRef, {
+          // Execute the query to fetch at most one document
+          const existingDocSnapshot = await getDocs(existingDocQuery);
+
+          if (!existingDocSnapshot.empty) {
+            // Subcollection document exists, update it
+            const existingDocRef = existingDocSnapshot.docs[0].ref;
+
+            await updateDoc(existingDocRef, {
               interface: this.inter,
               vlan: this.vl,
               ip_address: this.ip,
               mask: this.mask,
               ospf: this.ospf,
             });
+
+            console.log(
+              "Successfully updated document in subcollection:",
+              vrfName
+            );
           } else {
-            // Subcollection with the provided VRF name does not exist, create a new subcollection and add the additional information
-
-            // Create a subcollection with the provided VRF name
-            const vrfNameSubcollectionRef = collection(
-              routerDocRef,
-              this.VRF_Names
-            );
-
-            // Add additional information to the new subcollection
+            // Subcollection document doesn't exist, create it and add document
             await addDoc(vrfNameSubcollectionRef, {
               interface: this.inter,
               vlan: this.vl,
@@ -138,30 +148,18 @@ export default {
               mask: this.mask,
               ospf: this.ospf,
             });
+
+            console.log(
+              "Successfully added document to subcollection:",
+              vrfName
+            );
           }
         } else {
-          // Document does not exist, create it and add the provided information
-
-          // Create the document with the PE router ID
-          await setDoc(routerDocRef, {});
-
-          // Create a subcollection with the provided VRF name
-          const vrfNameSubcollectionRef = collection(
-            routerDocRef,
-            this.VRF_Names
-          );
-
-          // Add additional information to the new subcollection
-          await addDoc(vrfNameSubcollectionRef, {
-            interface: this.inter,
-            vlan: this.vl,
-            ip_address: this.ip,
-            mask: this.mask,
-            ospf: this.ospf,
-          });
+          // Document does not exist, handle this case if necessary (e.g., create the document)
+          console.log("Document not found:", this.pe); // Or throw an error if required
         }
 
-        // Clear input fields after adding the data
+        // Clear input fields after successful operation
         this.pe = "";
         this.VRF_Names = "";
         this.inter = "";
@@ -170,7 +168,7 @@ export default {
         this.mask = "";
         this.ospf = "";
       } catch (error) {
-        console.error(error);
+        console.error("Error adding PE:", error);
       }
     },
   },

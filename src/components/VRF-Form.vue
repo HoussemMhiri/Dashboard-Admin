@@ -2,8 +2,7 @@
   <div class="vrf_container">
     <h1 class="text-center m-4">{{ title }}</h1>
     <div class="w-75 m-auto 0">
-      <!--     <form @submit.prevent="addVRF"> -->
-      <form @submit.prevent="addVRF" v-if="showForm">
+      <form @submit.prevent="postData" v-if="showForm">
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label"
             >Router:</label
@@ -115,6 +114,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { db } from "@/firebase";
+import axios from "axios";
 
 export default {
   data() {
@@ -129,6 +129,14 @@ export default {
       router: "",
 
       errMsg: "",
+      dataToPost: {
+        name: this.VRF_Names,
+        rd: this.Rds,
+        rt_export: this.RT_Exports,
+        rt_import: this.RT_Imports,
+        intf: "1",
+        addr: "2",
+      },
     };
   },
   methods: {
@@ -138,68 +146,38 @@ export default {
     updateShow() {
       this.showForm = this.$route.params.id === "Build_VRF";
     },
-    /* addVRF() {
-      setDoc(doc(db, "dataset", this.router), {
-        VRF_Name: this.VRF_Names,
-        RD: this.Rds,
-        RT_Export: this.RT_Exports,
-        RT_Import: this.RT_Imports,
-      });
-      this.VRF_Names = "";
-      this.Rds = "";
-      this.RT_Exports = "";
-      this.RT_Imports = "";
-      this.router = "";
-    }, */
 
-    /*     async addVRF() {
-      const datasetRef = collection(db, "dataset");
-      const routerDocRef = doc(datasetRef, this.router);
-
+    /*   async postData() {
       try {
-        // Check if the document exists
-        const docSnapshot = await getDoc(routerDocRef);
-
-        if (docSnapshot.exists()) {
-          // Document exists, create a subcollection with the name of VRF_Names
-          const vrfNameSubcollectionRef = collection(
-            routerDocRef,
-            this.VRF_Names
-          );
-
-          // Add additional information to the subcollection
-          await addDoc(vrfNameSubcollectionRef, {
-            RD: this.Rds,
-            RT_Export: this.RT_Exports,
-            RT_Import: this.RT_Imports,
-          });
-        } else {
-          // Document does not exist, create it and add the provided information
-          await setDoc(routerDocRef, {});
-
-          // Create a subcollection with the name of VRF_Names
-          const vrfNameSubcollectionRef = collection(
-            routerDocRef,
-            this.VRF_Names
-          );
-
-          // Add additional information to the subcollection
-          await addDoc(vrfNameSubcollectionRef, {
-            RD: this.Rds,
-            RT_Export: this.RT_Exports,
-            RT_Import: this.RT_Imports,
-          });
-        }
-
-        this.VRF_Names = "";
-        this.Rds = "";
-        this.RT_Exports = "";
-        this.RT_Imports = "";
-        this.router = "";
+        const { data } = await axios.post(
+          "http://127.0.0.1:5000/addConfig",
+          this.dataToPost
+        );
+        console.log(data);
       } catch (error) {
-        console.error(error);
+        console.log(error);
       }
     }, */
+
+    async postData() {
+      try {
+        const response = await axios.post(
+          "http://127.0.0.1:5000/addConfig",
+          this.dataToPost,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error(
+          "Error during Axios POST request:",
+          error.response ? error.response.data : error.message
+        );
+      }
+    },
 
     async addVRF() {
       const datasetRef = collection(db, "dataset");
