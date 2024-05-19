@@ -101,8 +101,6 @@
 
       <!--    </form> -->
     </div>
-
-    {{ dataToPost }}
   </div>
 </template>
 
@@ -150,18 +148,6 @@ export default {
       this.showForm = this.$route.params.id === "Build_VRF";
     },
 
-    /*   async postData() {
-      try {
-        const { data } = await axios.post(
-          "http://127.0.0.1:5000/addConfig",
-          this.dataToPost
-        );
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-      }
-    }, */
-
     async postData() {
       try {
         this.dataToPost = {
@@ -174,7 +160,7 @@ export default {
           addr: 15,
         };
         const response = await axios.post(
-          "http://127.0.0.1:5000/addConfig",
+          "https://ea1f-197-1-90-20.ngrok-free.app/addConfig",
           this.dataToPost,
           {
             headers: {
@@ -183,6 +169,11 @@ export default {
           }
         );
         console.log(response.data);
+        this.router = "";
+        this.VRF_Names = "";
+        this.Rds = "";
+        this.RT_Exports = "";
+        this.RT_Imports = "";
       } catch (error) {
         console.log(error);
       }

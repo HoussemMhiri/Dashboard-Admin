@@ -63,6 +63,17 @@ export default {
         console.error(error);
       }
     }, */
+  /*   async postData() {
+      try {
+        const { data } = await axios.post(
+          "http://127.0.0.1:5000/addConfig",
+          this.dataToPost
+        );
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }, */
 };
 </script>
 

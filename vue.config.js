@@ -2,7 +2,7 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: "http://127.0.0.1:5000/",
+        target: "https://ea1f-197-1-90-20.ngrok-free.app/",
         ws: true,
         changeOrigin: true,
         pathRewrite: { "^/addConfig": "/addConfig" },
