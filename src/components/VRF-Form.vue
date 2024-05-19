@@ -65,12 +65,13 @@
 
       <!-- REMOVE -->
 
-      <form v-else>
+      <form v-else @submit.prevent="removeData">
         <div class="mb-3">
           <label for="exampleFormControlInput5" class="form-label"
             >PE Router:</label
           >
           <input
+            v-model="router"
             type="text"
             class="form-control"
             id="exampleFormControlInput5"
@@ -81,6 +82,7 @@
             >VRF Name:</label
           >
           <input
+            v-model="VRF_Names"
             type="text"
             class="form-control"
             id="exampleFormControlInput6"
@@ -90,6 +92,7 @@
           <button class="w-100 btn btn-danger">Remove</button>
         </div>
       </form>
+
       <!--   <div class="w-100">
         <button
           class="w-100"
@@ -121,7 +124,6 @@ export default {
     return {
       title: "",
       showForm: true,
-
       VRF_Names: "",
       Rds: "",
       RT_Exports: "",
@@ -160,7 +162,7 @@ export default {
           addr: 15,
         };
         const response = await axios.post(
-          "https://e5b9-197-1-90-20.ngrok-free.app/addConfig",
+          "https://03eb-197-1-90-20.ngrok-free.app/addConfig",
           this.dataToPost,
           {
             headers: {
@@ -178,7 +180,6 @@ export default {
         console.log(error);
       }
     },
-
     async addVRF() {
       const datasetRef = collection(db, "dataset");
       const routerDocRef = doc(datasetRef, this.router);
@@ -235,6 +236,86 @@ export default {
         console.error(error);
       }
     },
+    // remove data from the template => backend connection 
+    async removeData() {
+      try {
+        this.dataToPost = {
+          router: this.router,
+          vrfName: this.VRF_Names,
+        };
+        const response = await axios.post(
+          "http://127.0.0.1:5000/removeConfig",
+          this.dataToPost,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+        this.router = "";
+        this.VRF_Names = "";
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // remove data from the database => database update
+    // async removeVRF() {
+    //   const datasetRef = collection(db, "dataset");
+    //   const routerDocRef = doc(datasetRef, this.router);
+
+    //   try {
+    //     // Check if the document exists
+    //     const docSnapshot = await getDoc(routerDocRef);
+
+    //     if (docSnapshot.exists()) {
+    //       // Document exists, check if VRF name subcollection exists
+    //       const vrfNameSubcollectionRef = collection(
+    //         routerDocRef,
+    //         this.VRF_Names
+    //       );
+    //       const vrfNameSnapshot = await getDocs(vrfNameSubcollectionRef);
+
+    //       if (vrfNameSnapshot.size > 0) {
+    //         // VRF name subcollection exists, set error message
+    //         this.errMsg = "This VRF Name is already exist";
+    //         return; // Exit the function
+    //       } else {
+    //         // VRF name subcollection doesn't exist, create it
+    //         await addDoc(vrfNameSubcollectionRef, {
+    //           RD: this.Rds,
+    //           RT_Export: this.RT_Exports,
+    //           RT_Import: this.RT_Imports,
+    //         });
+    //       }
+    //     } else {
+    //       // Document does not exist, create it and add the provided information
+    //       await setDoc(routerDocRef, {});
+
+    //       // Create a subcollection with the name of VRF_Names
+    //       const vrfNameSubcollectionRef = collection(
+    //         routerDocRef,
+    //         this.VRF_Names
+    //       );
+
+    //       // Add additional information to the subcollection
+    //       await addDoc(vrfNameSubcollectionRef, {
+    //         RD: this.Rds,
+    //         RT_Export: this.RT_Exports,
+    //         RT_Import: this.RT_Imports,
+    //       });
+    //     }
+
+    //     // Reset input values
+    //     this.VRF_Names = "";
+    //     this.Rds = "";
+    //     this.RT_Exports = "";
+    //     this.RT_Imports = "";
+    //     this.router = "";
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // },
   },
   created() {
     this.title = this.$route.params.id;
