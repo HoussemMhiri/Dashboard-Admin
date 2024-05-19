@@ -162,7 +162,7 @@ export default {
           addr: 15,
         };
         const response = await axios.post(
-          "https://03eb-197-1-90-20.ngrok-free.app/addConfig",
+          "https://e5b9-197-1-90-20.ngrok-free.app/addConfig",
           this.dataToPost,
           {
             headers: {
