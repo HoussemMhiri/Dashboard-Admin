@@ -240,11 +240,11 @@ export default {
     async removeData() {
       try {
         this.dataToPost = {
-          router: this.router,
+          hostname: this.router,
           vrfName: this.VRF_Names,
         };
         const response = await axios.post(
-          "http://127.0.0.1:5000/removeConfig",
+          "https://e5b9-197-1-90-20.ngrok-free.app/removeConfig",
           this.dataToPost,
           {
             headers: {
