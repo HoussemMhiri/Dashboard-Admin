@@ -130,7 +130,7 @@ export default {
 
       errMsg: "",
       dataToPost: {
-        hostname: "",
+        router: "",
         vrfName: "",
         rd: "",
         rt_export: "",
@@ -151,7 +151,7 @@ export default {
     async postData() {
       try {
         this.dataToPost = {
-          hostname: this.router,
+          router: this.router,
           vrfName: this.VRF_Names,
           rd: this.Rds,
           rt_export: this.RT_Exports,
@@ -160,7 +160,7 @@ export default {
           addr: 15,
         };
         const response = await axios.post(
-          "https://ea1f-197-1-90-20.ngrok-free.app/addConfig",
+          "https://b448-102-27-132-64.ngrok-free.app/addConfig",
           this.dataToPost,
           {
             headers: {
