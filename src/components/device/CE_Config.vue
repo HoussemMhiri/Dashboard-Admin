@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="postCE">
+  <form>
     <div class="mb-3">
       <label for="exampleFormControlInput11" class="form-label"
         >CE Router:</label
@@ -52,7 +52,8 @@
       />
     </div>
     <div class="w-100">
-      <button class="btn btn-primary w-100">Submit</button>
+      <!--  <button class="btn btn-primary w-100">Submit</button> -->
+      <pop-over :postData="postCE" />
     </div>
   </form>
 </template>
@@ -61,7 +62,9 @@
 import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import axios from "axios";
+import popOver from "../reusable/pop-over.vue";
 export default {
+  components: { popOver },
   data() {
     return {
       ce: "",
@@ -89,26 +92,25 @@ export default {
     },
 
     async postCE() {
-    let ceData ={
-        hostname:this.ce,
+      let ceData = {
+        hostname: this.ce,
         Interface: this.inter,
-        IP_Address:this.ip,
-        Mask:this.mask,
-        OSPF:this.ospf
-    }
+        IP_Address: this.ip,
+        Mask: this.mask,
+        OSPF: this.ospf,
+      };
       try {
-        const {data} = await axios.post('/addCE', ceData) 
-        console.log(data) 
-        this.ce= "";
-        this.inter= "";
-        this.ip= "";
-        this.mask= "";
-        this.ospf= "";
+        const { data } = await axios.post("/addCE", ceData);
+        console.log(data);
+        this.ce = "";
+        this.inter = "";
+        this.ip = "";
+        this.mask = "";
+        this.ospf = "";
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-     
-    }
+    },
   },
 };
 </script>

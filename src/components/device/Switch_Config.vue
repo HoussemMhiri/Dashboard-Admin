@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="postSwitch">
+  <form>
     <div class="mb-3">
       <label for="exampleFormControlInput8" class="form-label"
         >Switch Name:</label
@@ -39,7 +39,8 @@
       />
     </div>
     <div class="w-100">
-      <button class="btn btn-primary w-100" type="submit">Submit</button>
+      <!--    <button class="btn btn-primary w-100" type="submit">Submit</button> -->
+      <pop-over :postData="postSwitch" />
     </div>
   </form>
 </template>
@@ -48,17 +49,15 @@
 import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import axios from "axios";
+import popOver from "../reusable/pop-over.vue";
 export default {
+  components: { popOver },
   data() {
     return {
-
-      
       hostname: "",
       cust: "",
       inter: "",
       vl: "",
-      
-     
     };
   },
 
@@ -104,24 +103,23 @@ export default {
     },
 
     async postSwitch() {
-    let switchData ={
-        hostname:this.hostname,
+      let switchData = {
+        hostname: this.hostname,
         customer: this.cust,
-        Inerface:this.inter,
-        VLAN:this.vl
-    }
+        Inerface: this.inter,
+        VLAN: this.vl,
+      };
       try {
-        const {data} = await axios.post('/addSwitch', switchData) 
-        console.log(data) 
-        this.hostname="",
-        this.cust="",
-        this.inter="",
-        this.vl=""
+        const { data } = await axios.post("/addSwitch", switchData);
+        console.log(data);
+        (this.hostname = ""),
+          (this.cust = ""),
+          (this.inter = ""),
+          (this.vl = "");
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-     
-    }
+    },
   },
 };
 </script>

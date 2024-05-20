@@ -52,8 +52,6 @@ export default {
   letter-spacing: 0.4px;
   font-size: 25px;
   font-weight: 600;
-  /*  color: #7d516a; */
   color: #434656;
-  /*  color: #5e72c2; */
 }
 </style>

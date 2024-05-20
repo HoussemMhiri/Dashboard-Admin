@@ -23,14 +23,18 @@
           <router-link
             :to="{ name: 'VRF_Config', params: { id: 'Build_VRF' } }"
             class="router"
-            ><li>Build VRF</li></router-link
-          >
+            ><li :class="{ 'active-link': isActive('Build_VRF') }">
+              Build VRF
+            </li>
+          </router-link>
 
           <router-link
             :to="{ name: 'VRF_Config', params: { id: 'Remove_VRF' } }"
             class="router"
-            ><li>Remove VRF</li></router-link
-          >
+            ><li :class="{ 'active-link': isActive('Remove_VRF') }">
+              Remove VRF
+            </li>
+          </router-link>
         </ul>
       </div>
       <div class="sec_config">
@@ -43,17 +47,23 @@
           <router-link
             :to="{ name: 'Device_Config', params: { id: 'PE_Config' } }"
             class="router"
-            ><li>PE Config</li></router-link
+            ><li :class="{ 'active-link': isActive('PE_Config') }">
+              PE Config
+            </li></router-link
           >
           <router-link
             :to="{ name: 'Device_Config', params: { id: 'Switch_Config' } }"
             class="router"
-            ><li>Switch Config</li></router-link
+            ><li :class="{ 'active-link': isActive('Switch_Config') }">
+              Switch Config
+            </li></router-link
           >
           <router-link
             :to="{ name: 'Device_Config', params: { id: 'CE_Config' } }"
             class="router"
-            ><li>CE Config</li></router-link
+            ><li :class="{ 'active-link': isActive('CE_Config') }">
+              CE Config
+            </li></router-link
           >
         </ul>
       </div>
@@ -62,10 +72,20 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    isActive(route) {
+      return this.$route.params.id === route;
+    },
+  },
+};
 </script>
 
 <style scoped>
+.active-link {
+  padding-left: 10px;
+  color: #ea7b22;
+}
 .router {
   text-decoration: none;
 }

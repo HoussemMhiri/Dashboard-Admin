@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="postPE">
+  <form>
     <div class="mb-3">
       <label for="exampleFormControlInput1" class="form-label"
         >PE Router:</label
@@ -70,7 +70,8 @@
       />
     </div>
     <div class="w-100">
-      <button class="btn btn-primary w-100">Submit</button>
+      <!--      <button class="btn btn-primary w-100">Submit</button> -->
+      <pop-over :postData="postPE" />
     </div>
   </form>
 </template>
@@ -89,7 +90,9 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase";
 import axios from "axios";
+import popOver from "../reusable/pop-over.vue";
 export default {
+  components: { popOver },
   data() {
     return {
       pe: "",
@@ -184,21 +187,22 @@ export default {
           Mask: this.mask,
           OSPF: this.ospf,
         };
-        const {data} = await axios.post(
-          "https://e5b9-197-1-90-20.ngrok-free.app/addPE",peData);
+        const { data } = await axios.post(
+          "https://e5b9-197-1-90-20.ngrok-free.app/addPE",
+          peData
+        );
         console.log(data);
-        this.pe= "";
-        this.VRF_Names= "";
-        this.inter= "";
-        this.vl= "";
-        this.ip= "";
-        this.mask= "";
-        this.ospf= "";
+        this.pe = "";
+        this.VRF_Names = "";
+        this.inter = "";
+        this.vl = "";
+        this.ip = "";
+        this.mask = "";
+        this.ospf = "";
       } catch (error) {
         console.log(error);
       }
     },
-
   },
 };
 </script>

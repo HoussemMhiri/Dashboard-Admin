@@ -2,7 +2,7 @@
   <div class="vrf_container">
     <h1 class="text-center m-4">{{ title }}</h1>
     <div class="w-75 m-auto 0">
-      <form @submit.prevent="postData" v-if="showForm">
+      <form v-if="showForm">
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label"
             >Router:</label
@@ -25,7 +25,7 @@
             v-model="VRF_Names"
           />
 
-          <p class="text-danger pt-3">{{ errMsg }}</p>
+          <!--  <p class="text-danger pt-3">{{ errMsg }}</p> -->
         </div>
         <div class="mb-3">
           <label for="exampleFormControlInput2" class="form-label">RD:</label>
@@ -81,8 +81,8 @@
           />
         </div>
         <div class="w-100">
-       <!--    <button class="w-100 btn btn-primary">Build</button> --> 
-           <modal/>
+          <!--  <button class="w-100 btn btn-primary">Build</button> -->
+          <pop-over :postData="postData" />
         </div>
       </form>
 
@@ -94,7 +94,7 @@
             >PE Router:</label
           >
           <input
-            v-model="router"
+            v-model="PE_router"
             type="text"
             class="form-control"
             id="exampleFormControlInput5"
@@ -105,27 +105,17 @@
             >VRF Name:</label
           >
           <input
-            v-model="VRF_Names"
+            v-model="VRF_Name"
             type="text"
             class="form-control"
             id="exampleFormControlInput6"
           />
         </div>
         <div class="w-100">
-          <button class="w-100 btn btn-danger">Remove</button>
+          <!--  <button class="w-100 btn btn-danger">Remove</button> -->
+          <pop-over :postData="removeData" bgColor="true" />
         </div>
       </form>
-
-      <!--   <div class="w-100">
-        <button
-          class="w-100"
-          :class="[showForm ? 'btn btn-primary' : 'btn btn-danger']"
-        >
-          {{ showForm ? "Build" : "Remove" }}
-        </button>
-      </div> -->
-
-      <!--    </form> -->
     </div>
   </div>
 </template>
@@ -141,10 +131,11 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase";
 import axios from "axios";
-import modal from './reusable/modal.vue';
+import modal from "./reusable/modal.vue";
+import PopOver from "./reusable/pop-over.vue";
 
 export default {
-  components: { modal },
+  components: { modal, PopOver },
   data() {
     return {
       title: "",
@@ -158,7 +149,9 @@ export default {
       addr: "",
 
       errMsg: "",
-      
+
+      PE_router: "",
+      VRF_Name: "",
     };
   },
   methods: {
@@ -171,7 +164,7 @@ export default {
 
     async postData() {
       try {
-       const dataToPost = {
+        const dataToPost = {
           hostname: this.router,
           vrfName: this.VRF_Names,
           rd: this.Rds,
@@ -180,7 +173,7 @@ export default {
           intf: this.intf,
           addr: this.addr,
         };
-        const {data} = await axios.post(
+        const { data } = await axios.post(
           "https://e5b9-197-1-90-20.ngrok-free.app/addConfig",
           dataToPost,
           {
@@ -255,16 +248,16 @@ export default {
         console.error(error);
       }
     },
-    // remove data from the template => backend connection 
+    // remove data from the template => backend connection
     async removeData() {
       try {
-        this.dataToPost = {
-          hostname: this.router,
-          vrfName: this.VRF_Names,
+        const dataToPost = {
+          hostname: this.PE_router,
+          vrfName: this.VRF_Name,
         };
         const response = await axios.post(
           "https://e5b9-197-1-90-20.ngrok-free.app/removeConfig",
-          this.dataToPost,
+          dataToPost,
           {
             headers: {
               "Content-Type": "application/json",
@@ -272,69 +265,13 @@ export default {
           }
         );
         console.log(response.data);
-        this.router = "";
-        this.VRF_Names = "";
+        this.PE_router = "";
+        this.VRF_Name = "";
       } catch (error) {
         console.log(error);
       }
     },
     // remove data from the database => database update
-    // async removeVRF() {
-    //   const datasetRef = collection(db, "dataset");
-    //   const routerDocRef = doc(datasetRef, this.router);
-
-    //   try {
-    //     // Check if the document exists
-    //     const docSnapshot = await getDoc(routerDocRef);
-
-    //     if (docSnapshot.exists()) {
-    //       // Document exists, check if VRF name subcollection exists
-    //       const vrfNameSubcollectionRef = collection(
-    //         routerDocRef,
-    //         this.VRF_Names
-    //       );
-    //       const vrfNameSnapshot = await getDocs(vrfNameSubcollectionRef);
-
-    //       if (vrfNameSnapshot.size > 0) {
-    //         // VRF name subcollection exists, set error message
-    //         this.errMsg = "This VRF Name is already exist";
-    //         return; // Exit the function
-    //       } else {
-    //         // VRF name subcollection doesn't exist, create it
-    //         await addDoc(vrfNameSubcollectionRef, {
-    //           RD: this.Rds,
-    //           RT_Export: this.RT_Exports,
-    //           RT_Import: this.RT_Imports,
-    //         });
-    //       }
-    //     } else {
-    //       // Document does not exist, create it and add the provided information
-    //       await setDoc(routerDocRef, {});
-
-    //       // Create a subcollection with the name of VRF_Names
-    //       const vrfNameSubcollectionRef = collection(
-    //         routerDocRef,
-    //         this.VRF_Names
-    //       );
-
-    //       // Add additional information to the subcollection
-    //       await addDoc(vrfNameSubcollectionRef, {
-    //         RD: this.Rds,
-    //         RT_Export: this.RT_Exports,
-    //         RT_Import: this.RT_Imports,
-    //       });
-    //     }
-
-    //     // Reset input values
-    //     this.VRF_Names = "";
-    //     this.Rds = "";
-    //     this.RT_Exports = "";
-    //     this.RT_Imports = "";
-    //     this.router = "";
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // },
   },
   created() {
     this.title = this.$route.params.id;
