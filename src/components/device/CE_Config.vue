@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="addCE">
+  <form @submit.prevent="postCE">
     <div class="mb-3">
       <label for="exampleFormControlInput11" class="form-label"
         >CE Router:</label
@@ -60,6 +60,7 @@
 <script>
 import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -86,6 +87,28 @@ export default {
       this.mask = "";
       this.ospf = "";
     },
+
+    async postCE() {
+    let ceData ={
+        hostname:this.ce,
+        Interface: this.inter,
+        IP_Address:this.ip,
+        Mask:this.mask,
+        OSPF:this.ospf
+    }
+      try {
+        const {data} = await axios.post('/addCE', ceData) 
+        console.log(data) 
+        this.ce= "";
+        this.inter= "";
+        this.ip= "";
+        this.mask= "";
+        this.ospf= "";
+      } catch (error) {
+        console.log(error)
+      }
+     
+    }
   },
 };
 </script>

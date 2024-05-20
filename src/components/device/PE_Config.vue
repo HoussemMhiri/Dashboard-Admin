@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="addPE">
+  <form @submit.prevent="postPE">
     <div class="mb-3">
       <label for="exampleFormControlInput1" class="form-label"
         >PE Router:</label
@@ -88,6 +88,7 @@ import {
   limit,
 } from "firebase/firestore";
 import { db } from "@/firebase";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -171,6 +172,33 @@ export default {
         console.error("Error adding PE:", error);
       }
     },
+
+    async postPE() {
+      try {
+        const peData = {
+          hostname: this.pe,
+          VRF_Name: this.VRF_Names,
+          Interface: this.inter,
+          VLAN: this.vl,
+          IP_Address: this.ip,
+          Mask: this.mask,
+          OSPF: this.ospf,
+        };
+        const {data} = await axios.post(
+          "https://e5b9-197-1-90-20.ngrok-free.app/addPE",peData);
+        console.log(data);
+        this.pe= "";
+        this.VRF_Names= "";
+        this.inter= "";
+        this.vl= "";
+        this.ip= "";
+        this.mask= "";
+        this.ospf= "";
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
   },
 };
 </script>

@@ -58,6 +58,28 @@
             v-model="RT_Imports"
           />
         </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput3" class="form-label"
+            >VRF Forwarding Interface:</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="exampleFormControlInput3"
+            v-model="intf"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlInput4" class="form-label"
+            >IP Address:</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="exampleFormControlInput4"
+            v-model="addr"
+          />
+        </div>
         <div class="w-100">
           <button class="w-100 btn btn-primary">Build</button>
         </div>
@@ -129,17 +151,11 @@ export default {
       RT_Exports: "",
       RT_Imports: "",
       router: "",
+      intf: "",
+      addr: "",
 
       errMsg: "",
-      dataToPost: {
-        router: "",
-        vrfName: "",
-        rd: "",
-        rt_export: "",
-        rt_import: "",
-        intf: 12,
-        addr: 15,
-      },
+      
     };
   },
   methods: {
@@ -152,25 +168,25 @@ export default {
 
     async postData() {
       try {
-        this.dataToPost = {
+       const dataToPost = {
           hostname: this.router,
           vrfName: this.VRF_Names,
           rd: this.Rds,
           rt_export: this.RT_Exports,
           rt_import: this.RT_Imports,
-          intf: 12,
-          addr: 15,
+          intf: this.intf,
+          addr: this.addr,
         };
-        const response = await axios.post(
+        const {data} = await axios.post(
           "https://e5b9-197-1-90-20.ngrok-free.app/addConfig",
-          this.dataToPost,
+          dataToPost,
           {
             headers: {
               "Content-Type": "application/json",
             },
           }
         );
-        console.log(response.data);
+        console.log(data);
         this.router = "";
         this.VRF_Names = "";
         this.Rds = "";
@@ -335,7 +351,7 @@ export default {
 
 <style scoped>
 .vrf_container {
-  margin: 81px auto;
+  margin: 30px auto;
   border-radius: 5px;
   margin-left: 35rem;
   width: 50%;

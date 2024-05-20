@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="addSwitch">
+  <form @submit.prevent="postSwitch">
     <div class="mb-3">
       <label for="exampleFormControlInput8" class="form-label"
         >Switch Name:</label
@@ -8,7 +8,7 @@
         type="text"
         class="form-control"
         id="exampleFormControlInput8"
-        v-model="sw"
+        v-model="hostname"
       />
     </div>
     <div class="mb-3">
@@ -47,13 +47,18 @@
 <script>
 import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
+import axios from "axios";
 export default {
   data() {
     return {
-      sw: "",
+
+      
+      hostname: "",
       cust: "",
       inter: "",
       vl: "",
+      
+     
     };
   },
 
@@ -97,6 +102,26 @@ export default {
         console.error(error);
       }
     },
+
+    async postSwitch() {
+    let switchData ={
+        hostname:this.hostname,
+        customer: this.cust,
+        Inerface:this.inter,
+        VLAN:this.vl
+    }
+      try {
+        const {data} = await axios.post('/addSwitch', switchData) 
+        console.log(data) 
+        this.hostname="",
+        this.cust="",
+        this.inter="",
+        this.vl=""
+      } catch (error) {
+        console.log(error)
+      }
+     
+    }
   },
 };
 </script>
