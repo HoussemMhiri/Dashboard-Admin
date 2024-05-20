@@ -61,8 +61,8 @@ export default {
 }
 .popover {
   position: absolute;
-  top: -100%;
-  left: -50%;
+  top: -50px;
+  left: -290px;
   z-index: 1000;
   display: block;
   background-color: #fff;
