@@ -10,7 +10,7 @@
     </button>
     <div v-if="isPopoverVisible" class="popover">
       <div class="popover-content">
-        <p>Are you sure you want to submit this form?</p>
+        <p>Are you sure you want to submit this Configuration ?</p>
         <button
           type="button"
           class="btn btn-danger btn-sm"
