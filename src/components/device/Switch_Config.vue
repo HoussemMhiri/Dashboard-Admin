@@ -106,16 +106,16 @@ export default {
       let switchData = {
         hostname: this.hostname,
         customer: this.cust,
-        Inerface: this.inter,
-        VLAN: this.vl,
+        interface: this.inter,
+        vlan: this.vl,
       };
       try {
         const { data } = await axios.post("/addSwitch", switchData);
         console.log(data);
-        (this.hostname = ""),
-          (this.cust = ""),
-          (this.inter = ""),
-          (this.vl = "");
+        this.hostname = "";
+          this.cust = "";
+          this.inter = "";
+          this.vl = "";
       } catch (error) {
         console.log(error);
       }
