@@ -58,28 +58,7 @@
             v-model="RT_Imports"
           />
         </div>
-        <div class="mb-3">
-          <label for="exampleFormControlInput3" class="form-label"
-            >VRF Forwarding Interface:</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="exampleFormControlInput3"
-            v-model="intf"
-          />
-        </div>
-        <div class="mb-3">
-          <label for="exampleFormControlInput4" class="form-label"
-            >IP Address:</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            id="exampleFormControlInput4"
-            v-model="addr"
-          />
-        </div>
+
         <div class="w-100">
           <!--  <button class="w-100 btn btn-primary">Build</button> -->
           <pop-over :postData="postData" />
@@ -140,16 +119,15 @@ export default {
     return {
       title: "",
       showForm: true,
+      // Build
       VRF_Names: "",
       Rds: "",
       RT_Exports: "",
       RT_Imports: "",
       router: "",
-      intf: "",
-      addr: "",
 
       errMsg: "",
-
+      // Remove
       PE_router: "",
       VRF_Name: "",
     };
@@ -170,8 +148,6 @@ export default {
           rd: this.Rds,
           rt_export: this.RT_Exports,
           rt_import: this.RT_Imports,
-          intf: this.intf,
-          addr: this.addr,
         };
         const { data } = await axios.post(
           "https://e5b9-197-1-90-20.ngrok-free.app/addConfig",

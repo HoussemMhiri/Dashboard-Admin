@@ -51,6 +51,28 @@
         v-model="ospf"
       />
     </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput14" class="form-label"
+        >Network Address:</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput14"
+        v-model="network_address"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput15" class="form-label"
+        >Wildcard Mask:</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput15"
+        v-model="wildcard_mask"
+      />
+    </div>
     <div class="w-100">
       <!--  <button class="btn btn-primary w-100">Submit</button> -->
       <pop-over :postData="postCE" />
@@ -72,6 +94,8 @@ export default {
       ip: "",
       mask: "",
       ospf: "",
+      network_address: "",
+      wildcard_mask: "",
     };
   },
   methods: {
@@ -98,6 +122,8 @@ export default {
         IP_Address: this.ip,
         Mask: this.mask,
         OSPF: this.ospf,
+        network_address: this.network_address,
+        wildcard_mask: this.wildcard_mask,
       };
       try {
         const { data } = await axios.post("/addCE", ceData);
@@ -107,6 +133,8 @@ export default {
         this.ip = "";
         this.mask = "";
         this.ospf = "";
+        this.network_address = "";
+        this.wildcard_mask = "";
       } catch (error) {
         console.log(error);
       }
