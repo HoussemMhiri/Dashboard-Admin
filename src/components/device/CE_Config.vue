@@ -119,14 +119,14 @@ export default {
       let ceData = {
         hostname: this.ce,
         Interface: this.inter,
-        IP_Address: this.ip,
+        addr: this.ip,
         Mask: this.mask,
         OSPF: this.ospf,
         network_address: this.network_address,
         wildcard_mask: this.wildcard_mask,
       };
       try {
-        const { data } = await axios.post("/addCE", ceData);
+        const { data } = await axios.post("https://9423-197-1-90-20.ngrok-free.app/addCE", ceData);
         console.log(data);
         this.ce = "";
         this.inter = "";

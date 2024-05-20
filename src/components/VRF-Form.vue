@@ -150,7 +150,7 @@ export default {
           rt_import: this.RT_Imports,
         };
         const { data } = await axios.post(
-          "https://e5b9-197-1-90-20.ngrok-free.app/addConfig",
+          "https://9423-197-1-90-20.ngrok-free.app/addConfig",
           dataToPost,
           {
             headers: {
@@ -232,7 +232,7 @@ export default {
           vrfName: this.VRF_Name,
         };
         const response = await axios.post(
-          "https://e5b9-197-1-90-20.ngrok-free.app/removeConfig",
+          "https://9423-197-1-90-20.ngrok-free.app/removeConfig",
           dataToPost,
           {
             headers: {

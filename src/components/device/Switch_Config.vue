@@ -110,7 +110,7 @@ export default {
         vlan: this.vl,
       };
       try {
-        const { data } = await axios.post("/addSwitch", switchData);
+        const { data } = await axios.post("https://9423-197-1-90-20.ngrok-free.app/addSwitch", switchData);
         console.log(data);
         this.hostname = "";
           this.cust = "";

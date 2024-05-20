@@ -188,7 +188,7 @@ export default {
           OSPF: this.ospf,
         };
         const { data } = await axios.post(
-          "https://e5b9-197-1-90-20.ngrok-free.app/addPE",
+          "https://9423-197-1-90-20.ngrok-free.app/addPE",
           peData
         );
         console.log(data);
