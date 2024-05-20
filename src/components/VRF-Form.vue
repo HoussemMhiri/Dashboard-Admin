@@ -81,7 +81,8 @@
           />
         </div>
         <div class="w-100">
-          <button class="w-100 btn btn-primary">Build</button>
+       <!--    <button class="w-100 btn btn-primary">Build</button> --> 
+           <modal/>
         </div>
       </form>
 
@@ -140,8 +141,10 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebase";
 import axios from "axios";
+import modal from './reusable/modal.vue';
 
 export default {
+  components: { modal },
   data() {
     return {
       title: "",
