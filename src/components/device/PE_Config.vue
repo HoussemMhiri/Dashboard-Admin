@@ -106,6 +106,9 @@ export default {
   },
 
   methods: {
+    // if router and customer exists (the two is the condition) , add the info (except the customer and router) to that customer in that router
+    // else error: please verify your inforamtion
+
     async addPE() {
       const datasetRef = collection(db, "dataset");
       const routerDocRef = doc(datasetRef, this.pe);
@@ -178,6 +181,7 @@ export default {
 
     async postPE() {
       try {
+        this.addPE();
         const peData = {
           hostname: this.pe,
           VRF_Name: this.VRF_Names,
@@ -191,7 +195,7 @@ export default {
           "https://fd81-197-240-49-154.ngrok-free.app/addPE",
           peData
         );
-        this.addPE()
+
         console.log(data);
         this.pe = "";
         this.VRF_Names = "";

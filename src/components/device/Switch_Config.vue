@@ -62,6 +62,7 @@ export default {
   },
 
   methods: {
+    // the same as build
     async addSwitch() {
       const datasetRef = collection(db, "dataset");
       const routerDocRef = doc(datasetRef, this.sw);
@@ -110,12 +111,15 @@ export default {
         vlan: this.vl,
       };
       try {
-        const { data } = await axios.post("fd81-197-240-49-154.ngrok-free.app/addSwitch", switchData);
+        const { data } = await axios.post(
+          "fd81-197-240-49-154.ngrok-free.app/addSwitch",
+          switchData
+        );
         console.log(data);
         this.hostname = "";
-          this.cust = "";
-          this.inter = "";
-          this.vl = "";
+        this.cust = "";
+        this.inter = "";
+        this.vl = "";
       } catch (error) {
         console.log(error);
       }

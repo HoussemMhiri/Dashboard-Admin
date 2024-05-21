@@ -25,7 +25,7 @@
             v-model="VRF_Names"
           />
 
-          <!--  <p class="text-danger pt-3">{{ errMsg }}</p> -->
+          <p v-if="errMsg" class="text-danger pt-3">{{ errMsg }}</p>
         </div>
         <div class="mb-3">
           <label for="exampleFormControlInput2" class="form-label">RD:</label>
@@ -142,6 +142,7 @@ export default {
 
     async postData() {
       try {
+        this.addVRF();
         const dataToPost = {
           hostname: this.router,
           vrfName: this.VRF_Names,
@@ -158,7 +159,7 @@ export default {
             },
           }
         );
-        this.addVRF()
+
         console.log(data);
         this.router = "";
         this.VRF_Names = "";
@@ -249,6 +250,7 @@ export default {
       }
     },
     // remove data from the database => database update
+    // if router and client exists , remove the client and his info else the router exists and client does not set errror: customer does not exist
   },
   created() {
     this.title = this.$route.params.id;

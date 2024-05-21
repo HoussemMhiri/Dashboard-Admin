@@ -99,6 +99,7 @@ export default {
     };
   },
   methods: {
+    // error if it has the same ce router
     async addCE() {
       setDoc(doc(db, "dataset", this.ce), {
         ce_router: this.ce,
@@ -126,7 +127,10 @@ export default {
         wildcard_mask: this.wildcard_mask,
       };
       try {
-        const { data } = await axios.post("fd81-197-240-49-154.ngrok-free.app/addCE", ceData);
+        const { data } = await axios.post(
+          "fd81-197-240-49-154.ngrok-free.app/addCE",
+          ceData
+        );
         console.log(data);
         this.ce = "";
         this.inter = "";
