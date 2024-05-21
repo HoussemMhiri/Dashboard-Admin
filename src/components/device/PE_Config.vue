@@ -188,9 +188,10 @@ export default {
           OSPF: this.ospf,
         };
         const { data } = await axios.post(
-          "https://9423-197-1-90-20.ngrok-free.app/addPE",
+          "https://fd81-197-240-49-154.ngrok-free.app/addPE",
           peData
         );
+        this.addPE()
         console.log(data);
         this.pe = "";
         this.VRF_Names = "";

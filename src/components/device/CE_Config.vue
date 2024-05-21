@@ -126,7 +126,7 @@ export default {
         wildcard_mask: this.wildcard_mask,
       };
       try {
-        const { data } = await axios.post("https://9423-197-1-90-20.ngrok-free.app/addCE", ceData);
+        const { data } = await axios.post("fd81-197-240-49-154.ngrok-free.app/addCE", ceData);
         console.log(data);
         this.ce = "";
         this.inter = "";
