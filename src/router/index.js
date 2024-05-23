@@ -4,6 +4,10 @@ import LoginVue from "../views/LoginVue.vue";
 import VRFFrom from "../components/VRF-Form.vue";
 import DeviceFrom from "../components/Device-Form.vue";
 import NotFoundComponent from "../components/Not-Found.vue";
+import forgot_password from "@/views/forgot_password.vue"; 
+import Register from "@/views/Register.vue"
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -17,6 +21,17 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginVue,
+      
+    },
+    {
+      path: '/forgot-password',
+      name: 'ForgotPassword',
+      component: forgot_password
+    },
+    {
+      path: '/Register',
+      name: 'register',
+      component: Register
     },
     {
       path: "/vrf/:id",
@@ -39,16 +54,18 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    const auth = JSON.parse(localStorage.getItem("auth"));
-    if (!auth || !auth.username || !auth.password) {
-      next({ name: "login" });
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+      if (!user) {
+        next('/login'); // Redirect to login page if user is not authenticated
+      } else {
+        next(); // Proceed to the route if user is authenticated
+      }
     } else {
-      next();
+      next(); // Proceed to the route if no authentication is required
     }
-  } else {
-    next();
-  }
+  });
 });
 
 export default router;
