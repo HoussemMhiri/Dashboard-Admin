@@ -57,7 +57,6 @@ export default {
       passwordError: "",
     };
   },
-
   methods: {
     async handleSubmit() {
       this.emailError = "";
@@ -89,47 +88,21 @@ export default {
 </script>
 
 <style scoped>
-.auth_logo_container {
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: -50px;
-}
-.heading {
-  padding-left: 50px;
-  font-size: 35px;
-  letter-spacing: 0.5px;
-}
-.imgs {
-  width: 150px;
-  height: auto;
-  object-fit: cover;
-  border-radius: 5px;
-}
 .login_container {
+  max-width: 500px;
+  margin: auto;
+  padding: 2em;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  max-width: 500px;
-  min-height: 400px;
   background-color: white;
   border-radius: 5px;
 }
-
-.btn_submit {
-  border: none;
-  background-color: #5e72c2;
-  color: white;
-  width: 100%;
-  margin-top: 2em;
-  border-radius: 5px;
-  height: 30px;
-  letter-spacing: 0.3px;
-  transition: all 0.2s ease-in-out;
+.heading {
+  text-align: center;
+  font-size: 24px;
+  margin-top: 0;
 }
-
-.btn_submit:hover {
-  background-color: #ea7b22;
+.text-danger {
+  color: red;
 }
 </style>
