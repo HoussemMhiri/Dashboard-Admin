@@ -24,7 +24,10 @@ export default {
   methods: {
     updateViews() {
       this.showViews =
-        this.$route.name !== "login" && this.$route.name !== "not-found";
+        this.$route.name !== "login" &&
+        this.$route.name !== "register" &&
+        this.$route.name !== "ForgotPassword" &&
+        this.$route.name !== "not-found";
     },
   },
   created() {

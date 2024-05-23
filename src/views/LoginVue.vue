@@ -5,21 +5,19 @@
       <img src="/img/3S.png" alt="" class="imgs" />
     </div>
     <form class="m-auto 0 w-75" @submit.prevent="handleSubmit">
-      <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label"
-          >Username</label
-        >
+      <div class="mb-3 mt-5">
+        <label for="exampleFormControlInput1" class="form-label">Email</label>
         <input
-          type="text"
+          type="email"
           class="form-control"
           id="exampleFormControlInput1"
-          v-model="auth.username"
+          v-model="email"
+          required
         />
-        <p class="text-danger">
-          {{ userErrorMsg }}
-        </p>
       </div>
-
+      <p class="text-danger">
+        {{ emailError }}
+      </p>
       <div class="mb-3">
         <label for="exampleFormControlInput2" class="form-label"
           >Password</label
@@ -27,40 +25,63 @@
         <input
           type="password"
           class="form-control"
-          v-model="auth.password"
           id="exampleFormControlInput2"
+          v-model="password"
+          required
         />
-        <p class="text-danger">
-          {{ passErrorMsg }}
-        </p>
       </div>
-
-      <button type="submit" class="btn_submit">Submit</button>
+      <p class="text-danger">
+        {{ passwordError }}
+      </p>
+      <button type="submit" class="btn_submit">Login</button>
+      <p class="mt-3">
+        Don't have an account?
+        <router-link to="/register">Register</router-link>
+      </p>
+      <p>
+        <router-link to="/forgot-password">Forgot Password?</router-link>
+      </p>
     </form>
   </div>
 </template>
 
 <script>
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 export default {
   data() {
     return {
-      auth: {
-        username: "",
-        password: "",
-      },
-      userErrorMsg: "",
-      passErrorMsg: "",
+      email: "",
+      password: "",
+      emailError: "",
+      passwordError: "",
     };
   },
 
   methods: {
-    handleSubmit() {
-      if (!this.auth.username || !this.auth.password) {
-        this.userErrorMsg = !this.auth.username ? "Username is Required" : "";
-        this.passErrorMsg = !this.auth.password ? "Password is Required" : "";
-      } else {
-        localStorage.setItem("auth", JSON.stringify(this.auth));
-        this.$router.push("/");
+    async handleSubmit() {
+      this.emailError = "";
+      this.passwordError = "";
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          this.email,
+          this.password
+        );
+        console.log("User logged in successfully:", userCredential.user);
+        this.$router.push("/"); // Redirect to the home page after successful login
+      } catch (error) {
+        console.error("Login error:", error);
+        if (
+          error.code === "auth/user-not-found" ||
+          error.code === "auth/wrong-password"
+        ) {
+          this.emailError = "Invalid email or password";
+          this.passwordError = "Invalid email or password";
+        } else {
+          this.emailError = error.message;
+        }
       }
     },
   },

@@ -13,11 +13,18 @@
 </template>
 
 <script>
+import { getAuth, signOut } from "firebase/auth";
 export default {
   methods: {
-    handleLogout() {
-      localStorage.removeItem("auth");
-      window.location.reload();
+    async handleLogout() {
+      try {
+        const auth = getAuth(); // Get the auth object
+        await signOut(auth); // Logout the user using the auth object
+        this.$router.push("/login"); // Redirect to the login page
+      } catch (error) {
+        console.error("Logout error:", error);
+        // Handle logout error if needed
+      }
     },
   },
 };
