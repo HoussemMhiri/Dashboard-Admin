@@ -74,6 +74,21 @@ export default {
         console.log(error);
       }
     }, */
+  /*   async addCE() {
+      setDoc(doc(db, "dataset", this.ce), {
+        ce_router: this.ce,
+        interface: this.inter,
+        ip_address: this.ip,
+        mask: this.mask,
+        ospf: this.ospf,
+      });
+
+      this.ce = "";
+      this.inter = "";
+      this.ip = "";
+      this.mask = "";
+      this.ospf = "";
+    }, */
 };
 </script>
 

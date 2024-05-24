@@ -10,6 +10,7 @@
         id="exampleFormControlInput1"
         v-model="pe"
       />
+      <p v-if="errMsgRouter" class="text-danger pt-3">{{ errMsgRouter }}</p>
     </div>
     <div class="mb-3">
       <label for="exampleFormControlInput2" class="form-label">VRF Name:</label>
@@ -19,6 +20,7 @@
         id="exampleFormControlInput2"
         v-model="VRF_Names"
       />
+      <p v-if="errMsgCust" class="text-danger pt-3">{{ errMsgCust }}</p>
     </div>
     <div class="mb-3">
       <label for="exampleFormControlInput3" class="form-label"
@@ -71,7 +73,7 @@
     </div>
     <div class="w-100">
       <!--      <button class="btn btn-primary w-100">Submit</button> -->
-      <pop-over :postData="postPE" />
+      <pop-over :postData="addPE" />
     </div>
     <modal :result="formattedResponsePE" />
   </form>
@@ -106,6 +108,8 @@ export default {
       ip: "",
       mask: "",
       ospf: "",
+      errMsgCust: "",
+      errMsgRouter: "",
     };
   },
 
@@ -150,34 +154,27 @@ export default {
               "Successfully updated document in subcollection:",
               vrfName
             );
+            // Clear input fields after successful operation
+            this.pe = "";
+            this.VRF_Names = "";
+            this.inter = "";
+            this.vl = "";
+            this.ip = "";
+            this.mask = "";
+            this.ospf = "";
+            this.errMsgCust = "";
+            this.errMsgRouter = "";
           } else {
             // Subcollection document doesn't exist, create it and add document
-            await addDoc(vrfNameSubcollectionRef, {
-              interface: this.inter,
-              vlan: this.vl,
-              ip_address: this.ip,
-              mask: this.mask,
-              ospf: this.ospf,
-            });
 
-            console.log(
-              "Successfully added document to subcollection:",
-              vrfName
-            );
+            console.log("customer does not exist:", vrfName);
+            this.errMsgCust = "Customer Not Found";
           }
         } else {
           // Document does not exist, handle this case if necessary (e.g., create the document)
           console.log("Document not found:", this.pe); // Or throw an error if required
+          this.errMsgRouter = "Router Not Found";
         }
-
-        // Clear input fields after successful operation
-        this.pe = "";
-        this.VRF_Names = "";
-        this.inter = "";
-        this.vl = "";
-        this.ip = "";
-        this.mask = "";
-        this.ospf = "";
       } catch (error) {
         console.error("Error adding PE:", error);
       }

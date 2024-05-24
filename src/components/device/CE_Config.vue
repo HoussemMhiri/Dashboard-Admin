@@ -32,6 +32,7 @@
         id="exampleFormControlInput13"
         v-model="ip"
       />
+      <p v-if="errMsgCE" class="text-danger pt-3">{{ errMsgCE }}</p>
     </div>
     <div class="mb-3">
       <label for="exampleFormControlInput14" class="form-label">Mask:</label>
@@ -75,7 +76,7 @@
     </div>
     <div class="w-100">
       <!--  <button class="btn btn-primary w-100">Submit</button> -->
-      <pop-over :postData="postCE" />
+      <pop-over :postData="addCE" />
     </div>
     <modal :result="formattedResponseCE" />
   </form>
@@ -99,24 +100,65 @@ export default {
       ospf: "",
       network_address: "",
       wildcard_mask: "",
+      errMsgCE: "",
     };
   },
   methods: {
     // error if it has the same ce router
-    async addCE() {
-      setDoc(doc(db, "dataset", this.ce), {
-        ce_router: this.ce,
-        interface: this.inter,
-        ip_address: this.ip,
-        mask: this.mask,
-        ospf: this.ospf,
-      });
 
-      this.ce = "";
-      this.inter = "";
-      this.ip = "";
-      this.mask = "";
-      this.ospf = "";
+    async addCE() {
+      const ceRef = doc(db, "dataset", this.ce);
+
+      try {
+        const ceDoc = await getDoc(ceRef);
+
+        if (ceDoc.exists()) {
+          // Check if the IP address matches
+          if (ceDoc.data().ip_address === this.ip) {
+            // Update the document if the IP address matches
+            await setDoc(
+              ceRef,
+              {
+                ce_router: this.ce,
+                interface: this.inter,
+                ip_address: this.ip,
+                mask: this.mask,
+                ospf: this.ospf,
+                network_address: this.network_address,
+                wildcard_mask: this.wildcard_mask,
+              },
+              { merge: true }
+            );
+            console.log("Document updated successfully.");
+          } else {
+            // Return an error if the IP address does not match
+            /*     throw new Error("The IP address does not match."); */
+            this.errMsgCE = "The IP address does not match.";
+          }
+        } else {
+          // Create a new document if it does not exist
+          await setDoc(ceRef, {
+            ce_router: this.ce,
+            interface: this.inter,
+            ip_address: this.ip,
+            mask: this.mask,
+            ospf: this.ospf,
+            network_address: this.network_address,
+            wildcard_mask: this.wildcard_mask,
+          });
+          console.log("Document created successfully.");
+          // Clear the form fields
+          this.ce = "";
+          this.inter = "";
+          this.ip = "";
+          this.mask = "";
+          this.ospf = "";
+          this.network_address = "";
+          this.wildcard_mask = "";
+        }
+      } catch (error) {
+        console.error("Error adding/updating document: ", error);
+      }
     },
 
     //Modal

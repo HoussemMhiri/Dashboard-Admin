@@ -19,7 +19,9 @@
         id="exampleFormControlInput8"
         v-model="cust"
       />
+      <p v-if="errMsg" class="text-danger pt-3">{{ errMsg }}</p>
     </div>
+
     <div class="mb-3">
       <label for="exampleFormControlInput9" class="form-label">Inerface:</label>
       <input
@@ -40,14 +42,21 @@
     </div>
     <div class="w-100">
       <!--    <button class="btn btn-primary w-100" type="submit">Submit</button> -->
-      <pop-over :postData="postSwitch" />
+      <pop-over :postData="addSwitch" />
     </div>
     <modal :result="formattedResponseSw" />
   </form>
 </template>
 
 <script>
-import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  setDoc,
+  doc,
+  getDoc,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "@/firebase";
 import axios from "axios";
 import popOver from "../reusable/pop-over.vue";
@@ -61,6 +70,7 @@ export default {
       cust: "",
       inter: "",
       vl: "",
+      errMsg: "",
     };
   },
 
@@ -68,21 +78,30 @@ export default {
     // the same as build (can have multiple customers also)
     async addSwitch() {
       const datasetRef = collection(db, "dataset");
-      const routerDocRef = doc(datasetRef, this.sw);
+      const routerDocRef = doc(datasetRef, this.hostname);
 
       try {
         // Check if the document exists
         const docSnapshot = await getDoc(routerDocRef);
 
         if (docSnapshot.exists()) {
-          // Document exists, create a subcollection with the name of VRF_Names
+          // Document exists, check if VRF name subcollection exists
           const vrfNameSubcollectionRef = collection(routerDocRef, this.cust);
+          const vrfNameSnapshot = await getDocs(vrfNameSubcollectionRef);
 
-          // Add additional information to the subcollection
-          await addDoc(vrfNameSubcollectionRef, {
-            interface: this.inter,
-            vlan: this.vl,
-          });
+          if (vrfNameSnapshot.size > 0) {
+            // VRF name subcollection exists, set error message
+            this.errMsg = "This VRF Name is already exist";
+            return; // Exit the function
+          } else {
+            // VRF name subcollection doesn't exist, create it
+            this.errMsg = "";
+            await addDoc(vrfNameSubcollectionRef, {
+              cust: this.cust,
+              inter: this.inter,
+              vl: this.vl,
+            });
+          }
         } else {
           // Document does not exist, create it and add the provided information
           await setDoc(routerDocRef, {});
@@ -92,12 +111,14 @@ export default {
 
           // Add additional information to the subcollection
           await addDoc(vrfNameSubcollectionRef, {
-            interface: this.inter,
-            vlan: this.vl,
+            cust: this.cust,
+            inter: this.inter,
+            vl: this.vl,
           });
         }
 
-        this.sw = "";
+        // Reset input values
+        this.hostname = "";
         this.cust = "";
         this.inter = "";
         this.vl = "";

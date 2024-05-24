@@ -61,14 +61,14 @@
 
         <div class="w-100">
           <!--  <button class="w-100 btn btn-primary">Build</button> -->
-          <pop-over :postData="postData" />
+          <pop-over :postData="addVRF" />
         </div>
         <modal :result="formattedResponse" />
       </form>
 
       <!-- REMOVE -->
 
-      <form v-else @submit.prevent="removeData">
+      <form v-else>
         <div class="mb-3">
           <label for="exampleFormControlInput5" class="form-label"
             >PE Router:</label
@@ -90,10 +90,11 @@
             class="form-control"
             id="exampleFormControlInput6"
           />
+          <p v-if="errMsgRemove" class="text-danger pt-3">{{ errMsgRemove }}</p>
         </div>
         <div class="w-100">
           <!--  <button class="w-100 btn btn-danger">Remove</button> -->
-          <pop-over :postData="removeData" bgColor="true" />
+          <pop-over :postData="removeVRF" bgColor="true" />
         </div>
         <modal :result="htmldataRemove" />
       </form>
@@ -109,6 +110,9 @@ import {
   doc,
   getDoc,
   getDocs,
+  query,
+  where,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase";
 import axios from "axios";
@@ -133,6 +137,7 @@ export default {
       router: "",
 
       errMsg: "",
+      errMsgRemove: "",
       // Remove
       PE_router: "",
       VRF_Name: "",
@@ -208,6 +213,7 @@ export default {
             return; // Exit the function
           } else {
             // VRF name subcollection doesn't exist, create it
+            this.errMsg = "";
             await addDoc(vrfNameSubcollectionRef, {
               RD: this.Rds,
               RT_Export: this.RT_Exports,
@@ -283,6 +289,22 @@ export default {
     },
     // remove data from the database => database update
     // if router and client exists , remove the client and his info else the router exists and client does not set errror: customer does not exist
+
+    async removeVRF() {
+      try {
+        const collectionPath = `dataset/${this.PE_router}/${this.VRF_Name}`;
+        const querySnapshot = await getDocs(collection(db, collectionPath));
+        querySnapshot.forEach(async (doc) => {
+          await deleteDoc(doc.ref);
+        });
+        console.log(`Collection ${collectionPath} deleted successfully.`);
+        this.PE_router = "";
+        this.VRF_Name = "";
+      } catch (error) {
+        this.errMsgRemove = "Verify Your Information";
+        console.error("Error removing collection: ", error);
+      }
+    },
   },
   created() {
     this.title = this.$route.params.id;
