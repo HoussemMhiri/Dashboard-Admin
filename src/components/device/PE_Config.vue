@@ -73,6 +73,7 @@
       <!--      <button class="btn btn-primary w-100">Submit</button> -->
       <pop-over :postData="postPE" />
     </div>
+    <modal :result="formattedResponsePE" />
   </form>
 </template>
 
@@ -91,10 +92,13 @@ import {
 import { db } from "@/firebase";
 import axios from "axios";
 import popOver from "../reusable/pop-over.vue";
+import Modal from "../reusable/modal.vue";
 export default {
-  components: { popOver },
+  components: { popOver, Modal },
   data() {
     return {
+      //
+      formattedResponsePE: null,
       pe: "",
       VRF_Names: "",
       inter: "",
@@ -181,7 +185,7 @@ export default {
 
     async postPE() {
       try {
-        this.addPE();
+        /*    this.addPE(); */
         const peData = {
           hostname: this.pe,
           VRF_Name: this.VRF_Names,
@@ -192,11 +196,18 @@ export default {
           OSPF: this.ospf,
         };
         const { data } = await axios.post(
-          "https://8a83-197-240-49-154.ngrok-free.app/addPE",
+          "https://9c5b-197-244-82-237.ngrok-free.app/addPE",
           peData
         );
 
-        console.log(data);
+        // render template logic
+        const formattedResponse = data.html.replace(
+          /\x1B\[[0-9;]*[JKmsu]/g,
+          ""
+        );
+        this.formattedResponsePE = formattedResponse;
+        this.showModal();
+        console.log(data.html);
         this.pe = "";
         this.VRF_Names = "";
         this.inter = "";
@@ -207,6 +218,12 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+
+    //Modal
+    showModal() {
+      // Use jQuery to show the modal
+      $("#resultModal").modal("show");
     },
   },
 };

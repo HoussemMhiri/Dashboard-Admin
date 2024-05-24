@@ -77,6 +77,7 @@
       <!--  <button class="btn btn-primary w-100">Submit</button> -->
       <pop-over :postData="postCE" />
     </div>
+    <modal :result="formattedResponseCE" />
   </form>
 </template>
 
@@ -85,10 +86,12 @@ import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import axios from "axios";
 import popOver from "../reusable/pop-over.vue";
+import Modal from "../reusable/modal.vue";
 export default {
-  components: { popOver },
+  components: { popOver, Modal },
   data() {
     return {
+      formattedResponseCE: null,
       ce: "",
       inter: "",
       ip: "",
@@ -116,6 +119,12 @@ export default {
       this.ospf = "";
     },
 
+    //Modal
+    showModal() {
+      // Use jQuery to show the modal
+      $("#resultModal").modal("show");
+    },
+
     async postCE() {
       let ceData = {
         hostname: this.ce,
@@ -128,10 +137,17 @@ export default {
       };
       try {
         const { data } = await axios.post(
-          "https://8a83-197-240-49-154.ngrok-free.app/addCE",
+          "https://9c5b-197-244-82-237.ngrok-free.app/addCE",
           ceData
         );
-        console.log(data);
+        // render template logic
+        const formattedResponse = data.html.replace(
+          /\x1B\[[0-9;]*[JKmsu]/g,
+          ""
+        );
+        this.formattedResponseCE = formattedResponse;
+        this.showModal();
+        console.log(data.html);
         this.ce = "";
         this.inter = "";
         this.ip = "";

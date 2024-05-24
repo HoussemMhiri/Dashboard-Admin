@@ -63,6 +63,7 @@
           <!--  <button class="w-100 btn btn-primary">Build</button> -->
           <pop-over :postData="postData" />
         </div>
+        <modal :result="formattedResponse" />
       </form>
 
       <!-- REMOVE -->
@@ -94,6 +95,7 @@
           <!--  <button class="w-100 btn btn-danger">Remove</button> -->
           <pop-over :postData="removeData" bgColor="true" />
         </div>
+        <modal :result="htmldataRemove" />
       </form>
     </div>
   </div>
@@ -117,6 +119,10 @@ export default {
   components: { modal, PopOver },
   data() {
     return {
+      //jinja template
+      formattedResponse: null,
+      htmldataRemove: null,
+      //
       title: "",
       showForm: true,
       // Build
@@ -142,7 +148,7 @@ export default {
 
     async postData() {
       try {
-        this.addVRF();
+        /*  this.addVRF(); */
         const dataToPost = {
           hostname: this.router,
           vrfName: this.VRF_Names,
@@ -151,7 +157,7 @@ export default {
           rt_import: this.RT_Imports,
         };
         const { data } = await axios.post(
-          "https://8a83-197-240-49-154.ngrok-free.app/addConfig",
+          "https://9c5b-197-244-82-237.ngrok-free.app/addConfig",
           dataToPost,
           {
             headers: {
@@ -159,8 +165,15 @@ export default {
             },
           }
         );
-
-        console.log(data);
+        // render template logic
+        const formattedResponse = data.html.replace(
+          /\x1B\[[0-9;]*[JKmsu]/g,
+          ""
+        );
+        this.formattedResponse = formattedResponse;
+        this.showModal();
+        console.log(data.html);
+        // empty the fields after submit
         this.router = "";
         this.VRF_Names = "";
         this.Rds = "";
@@ -170,6 +183,9 @@ export default {
         console.log(error);
       }
     },
+
+    // Add Config To DB
+
     async addVRF() {
       const datasetRef = collection(db, "dataset");
       const routerDocRef = doc(datasetRef, this.router);
@@ -226,6 +242,13 @@ export default {
         console.error(error);
       }
     },
+
+    // MOdal
+    showModal() {
+      // Use jQuery to show the modal
+      $("#resultModal").modal("show");
+    },
+
     // remove data from the template => backend connection
     async removeData() {
       try {
@@ -233,8 +256,8 @@ export default {
           hostname: this.PE_router,
           vrfName: this.VRF_Name,
         };
-        const response = await axios.post(
-          "https://8a83-197-240-49-154.ngrok-free.app/removeConfig",
+        const { data } = await axios.post(
+          "https://9c5b-197-244-82-237.ngrok-free.app/removeConfig",
           dataToPost,
           {
             headers: {
@@ -242,7 +265,16 @@ export default {
             },
           }
         );
-        console.log(response.data);
+
+        // render template logic
+        const formattedResponse = data.html.replace(
+          /\x1B\[[0-9;]*[JKmsu]/g,
+          ""
+        );
+        this.htmldataRemove = formattedResponse;
+        this.showModal();
+        console.log(data.html);
+        // empty the fields after submit
         this.PE_router = "";
         this.VRF_Name = "";
       } catch (error) {
