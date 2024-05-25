@@ -213,12 +213,13 @@ export default {
             return; // Exit the function
           } else {
             // VRF name subcollection doesn't exist, create it
-            this.errMsg = "";
+
             await addDoc(vrfNameSubcollectionRef, {
               RD: this.Rds,
               RT_Export: this.RT_Exports,
               RT_Import: this.RT_Imports,
             });
+            this.errMsg = "";
           }
         } else {
           // Document does not exist, create it and add the provided information
@@ -290,13 +291,47 @@ export default {
     // remove data from the database => database update
     // if router and client exists , remove the client and his info else the router exists and client does not set errror: customer does not exist
 
-    async removeVRF() {
+    /* async removeVRF() {
       try {
         const collectionPath = `dataset/${this.PE_router}/${this.VRF_Name}`;
         const querySnapshot = await getDocs(collection(db, collectionPath));
         querySnapshot.forEach(async (doc) => {
           await deleteDoc(doc.ref);
         });
+        console.log(`Collection ${collectionPath} deleted successfully.`);
+        this.PE_router = "";
+        this.VRF_Name = "";
+      } catch (error) {
+        this.errMsgRemove = "Verify Your Information";
+        console.error("Error removing collection: ", error);
+      }
+    }, */
+    async removeVRF() {
+      try {
+        const routerDocRef = doc(db, "dataset", this.PE_router);
+        const routerDocSnapshot = await getDoc(routerDocRef);
+
+        if (!routerDocSnapshot.exists()) {
+          // Router doesn't exist
+          this.errMsgRemove = "Router does not exist. Verify Your Information.";
+          return;
+        }
+
+        const collectionPath = `dataset/${this.PE_router}/${this.VRF_Name}`;
+        const querySnapshot = await getDocs(collection(db, collectionPath));
+
+        if (querySnapshot.empty) {
+          // Customer doesn't exist
+          this.errMsgRemove =
+            "Customer does not exist. Verify Your Information.";
+          return;
+        }
+
+        // Delete each document in the subcollection
+        querySnapshot.forEach(async (docSnapshot) => {
+          await deleteDoc(docSnapshot.ref);
+        });
+
         console.log(`Collection ${collectionPath} deleted successfully.`);
         this.PE_router = "";
         this.VRF_Name = "";
