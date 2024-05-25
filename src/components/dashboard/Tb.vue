@@ -1,7 +1,7 @@
 <template>
   <table class="table table-bordered">
     <thead>
-      <tr>
+      <tr class="table-primary">
         <th scope="col">Router</th>
         <th v-for="field in filtredFields" :key="field" scope="col">
           {{ field }}
@@ -10,7 +10,7 @@
     </thead>
     <tbody>
       <tr v-for="item in filteredData" :key="item.id">
-        <th scope="row">{{ item.id }}</th>
+        <th class="table-primary" scope="row">{{ item.id }}</th>
         <td v-for="field in filtredFields" :key="field">
           {{ item.data[field] }}
         </td>
