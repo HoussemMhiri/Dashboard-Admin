@@ -31,7 +31,7 @@ export default {
       for (const item of this.filteredData) {
         const dataKeysMap = new Map(Object.entries(item.data));
         const dataKeys = Array.from(dataKeysMap.keys());
-        keys.push(dataKeys);
+        keys.push(dataKeys.filter((key) => key !== "ce_router"));
       }
       return keys;
     },
