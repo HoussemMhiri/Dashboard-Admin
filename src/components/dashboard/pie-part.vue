@@ -44,7 +44,17 @@ export default {
         this.chart.destroy();
       }
 
-      const ctx = document.getElementById("doughnutChart").getContext("2d");
+      const ctx = document.getElementById("doughnutChart");
+      if (!ctx) {
+        console.error("DOM element not found");
+        return;
+      }
+
+      const context = ctx.getContext("2d");
+      if (!context) {
+        console.error("Failed to get 2d rendering context");
+        return;
+      }
 
       Chart.register(ChartDataLabels);
 
