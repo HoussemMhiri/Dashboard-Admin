@@ -1,6 +1,7 @@
 <template>
   <div class="pie_container">
-    <div>
+    <h3 class="text-center">Number of Devices</h3>
+    <div class="canv">
       <canvas id="doughnutChart"></canvas>
     </div>
   </div>
@@ -70,29 +71,30 @@ export default {
                 3,
                 this.countIdsStartingWithC,
               ],
-              backgroundColor: [
-                "rgba(54, 162, 235, 0.2)",
-                "rgba(255, 159, 64, 0.2)",
-                "rgba(75, 192, 192, 0.2)",
-                "rgba(255, 99, 132, 0.2)",
-              ],
-              borderColor: [
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 159, 64, 1)",
-                "rgba(75, 192, 192, 1)",
-                "rgba(255, 99, 132, 1)",
-              ],
-              borderWidth: 1,
+              backgroundColor: ["#5E72C2", "#96A6FB", "#EBEEFF", "#C8D6FF"],
+              borderColor: ["#5E72C2", "#96A6FB", "#EBEEFF", "#C8D6FF"],
+              borderWidth: 2,
             },
           ],
         },
         options: {
           responsive: true,
+
           plugins: {
+            legend: {
+              position: "bottom",
+              align: "center",
+              labels: {
+                usePointStyle: true,
+                pointStyle: "circle",
+              },
+            },
+
             datalabels: {
-              color: "#000",
+              color: "black",
               font: {
                 weight: "bold",
+                size: "16",
               },
               formatter: (value) => {
                 return value;
@@ -123,11 +125,27 @@ export default {
 </script>
 
 <style scoped>
+h3 {
+  color: #434656;
+  margin-top: 20px;
+  /*   margin-bottom: -20px; */
+}
 .pie_container {
+  /*  border: 1px solid red; */
   width: 100%;
+  height: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  /*   border: 1px solid black; */
+  background-color: white;
+  box-shadow: 0 2px 4px #5e72c2;
+  border-radius: 5px;
+  /*  padding-left: 40px; */
 }
 #doughnutChart {
-  width: 80% !important;
-  height: 400px !important;
+  width: 370px !important;
+  margin-bottom: 10px;
 }
 </style>

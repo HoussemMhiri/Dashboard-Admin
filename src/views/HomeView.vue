@@ -1,10 +1,13 @@
 <template>
   <div class="all_container">
     <div class="arch_pie">
-      <div>
-        <img src="/img/archNew.png" alt="" class="arch_img" />
+      <div class="archt">
+        <h3 class="text-center">Backbone IP/MPLS</h3>
+        <img src="/img/arch_org.png" alt="" class="arch_img" />
       </div>
-      <pie-part v-if="dbData" :dbData="dbData" />
+      <div class="the_pie">
+        <pie-part v-if="dbData" :dbData="dbData" />
+      </div>
     </div>
     <div class="tb_container">
       <Tb v-if="dbData" :dbData="dbData" />
@@ -67,23 +70,37 @@ export default {
 </script>
 
 <style scoped>
+h3 {
+  color: #434656;
+  margin-top: 20px;
+}
 .all_container {
   /*   border: 1px solid black; */
   margin-left: 325px;
+  background-color: #f5f5f5;
 }
 .arch_pie {
   display: flex;
-  justify-content: space-between;
+  /*   justify-content: space-between; */
   /*   border: 1px solid red; */
-  padding-top: 30px;
+  /*   padding-top: 0px; */
 }
 .arch_img {
-  width: 700px;
+  margin-top: 10px;
+  width: 650px;
   object-fit: contain;
 }
 
-.tb_container {
-  /* border: 1px solid black; */
-  padding-top: 30px;
+.archt {
+  background-color: white;
+  box-shadow: 0 2px 4px #5e72c2;
+  border-radius: 5px;
+  width: 55%;
+  margin: 10px;
+}
+.the_pie {
+  margin: 10px;
+  /*   border: 1px solid black; */
+  width: 500px;
 }
 </style>
