@@ -73,7 +73,7 @@
     </div>
     <div class="w-100">
       <!--      <button class="btn btn-primary w-100">Submit</button> -->
-      <pop-over :postData="addPE" />
+      <pop-over :postData="postPE" />
     </div>
     <modal :result="formattedResponsePE" />
   </form>
@@ -193,7 +193,7 @@ export default {
           OSPF: this.ospf,
         };
         const { data } = await axios.post(
-          "https://9c5b-197-244-82-237.ngrok-free.app/addPE",
+          "https://2a04-197-244-82-237.ngrok-free.app/addPE",
           peData
         );
 

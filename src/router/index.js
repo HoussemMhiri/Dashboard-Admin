@@ -43,6 +43,7 @@ const router = createRouter({
       component: DeviceFrom,
       meta: { requiresAuth: true },
     },
+
     {
       path: "/:pathMatch(.*)*",
       name: "not-found",

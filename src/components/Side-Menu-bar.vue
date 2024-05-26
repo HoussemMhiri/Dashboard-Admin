@@ -67,6 +67,29 @@
           >
         </ul>
       </div>
+      <div class="sec_config">
+        <div class="d-flex">
+          <i class="bi bi-arrows-move"></i>
+          <h5>Internal Routing</h5>
+        </div>
+
+        <ul>
+          <router-link
+            :to="{ name: 'Device_Config', params: { id: 'OSPF_Config' } }"
+            class="router"
+            ><li :class="{ 'active-link': isActive('OSPF_Config') }">
+              OSPF
+            </li></router-link
+          >
+          <router-link
+            :to="{ name: 'Device_Config', params: { id: 'EIGRP_Config' } }"
+            class="router"
+            ><li :class="{ 'active-link': isActive('EIGRP_Config') }">
+              EIGRP
+            </li></router-link
+          >
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -129,7 +152,7 @@ export default {
 }
 .first_config,
 .sec_config {
-  min-height: 200px;
+  min-height: 150px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;

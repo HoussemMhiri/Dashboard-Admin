@@ -94,7 +94,7 @@
         </div>
         <div class="w-100">
           <!--  <button class="w-100 btn btn-danger">Remove</button> -->
-          <pop-over :postData="removeVRF" bgColor="true" />
+          <pop-over :postData="removeData" bgColor="true" />
         </div>
         <modal :result="htmldataRemove" />
       </form>
@@ -163,13 +163,8 @@ export default {
           rt_import: this.RT_Imports,
         };
         const { data } = await axios.post(
-          "https://9c5b-197-244-82-237.ngrok-free.app/addConfig",
-          dataToPost,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          "https://2a04-197-244-82-237.ngrok-free.app/addConfig",
+          dataToPost
         );
         // render template logic
         const formattedResponse = data.html.replace(
@@ -265,13 +260,8 @@ export default {
           vrfName: this.VRF_Name,
         };
         const { data } = await axios.post(
-          "https://9c5b-197-244-82-237.ngrok-free.app/removeConfig",
-          dataToPost,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          "https://2a04-197-244-82-237.ngrok-free.app/removeConfig",
+          dataToPost
         );
 
         // render template logic

@@ -43,40 +43,10 @@
         v-model="mask"
       />
     </div>
-    <div class="mb-3">
-      <label for="exampleFormControlInput15" class="form-label">OSPF:</label>
-      <input
-        type="text"
-        class="form-control"
-        id="exampleFormControlInput15"
-        v-model="ospf"
-      />
-    </div>
-    <div class="mb-3">
-      <label for="exampleFormControlInput14" class="form-label"
-        >Network Address:</label
-      >
-      <input
-        type="text"
-        class="form-control"
-        id="exampleFormControlInput14"
-        v-model="network_address"
-      />
-    </div>
-    <div class="mb-3">
-      <label for="exampleFormControlInput15" class="form-label"
-        >Wildcard Mask:</label
-      >
-      <input
-        type="text"
-        class="form-control"
-        id="exampleFormControlInput15"
-        v-model="wildcard_mask"
-      />
-    </div>
+
     <div class="w-100">
       <!--  <button class="btn btn-primary w-100">Submit</button> -->
-      <pop-over :postData="addCE" />
+      <pop-over :postData="postCE" />
     </div>
     <modal :result="formattedResponseCE" />
   </form>
@@ -97,9 +67,6 @@ export default {
       inter: "",
       ip: "",
       mask: "",
-      ospf: "",
-      network_address: "",
-      wildcard_mask: "",
       errMsgCE: "",
     };
   },
@@ -123,9 +90,6 @@ export default {
                 interface: this.inter,
                 ip_address: this.ip,
                 mask: this.mask,
-                ospf: this.ospf,
-                network_address: this.network_address,
-                wildcard_mask: this.wildcard_mask,
               },
               { merge: true }
             );
@@ -142,9 +106,6 @@ export default {
             interface: this.inter,
             ip_address: this.ip,
             mask: this.mask,
-            ospf: this.ospf,
-            network_address: this.network_address,
-            wildcard_mask: this.wildcard_mask,
           });
           console.log("Document created successfully.");
           // Clear the form fields
@@ -152,9 +113,6 @@ export default {
           this.inter = "";
           this.ip = "";
           this.mask = "";
-          this.ospf = "";
-          this.network_address = "";
-          this.wildcard_mask = "";
         }
       } catch (error) {
         console.error("Error adding/updating document: ", error);
@@ -173,13 +131,10 @@ export default {
         Interface: this.inter,
         addr: this.ip,
         Mask: this.mask,
-        OSPF: this.ospf,
-        network_address: this.network_address,
-        wildcard_mask: this.wildcard_mask,
       };
       try {
         const { data } = await axios.post(
-          "https://9c5b-197-244-82-237.ngrok-free.app/addCE",
+          "https://2a04-197-244-82-237.ngrok-free.app/addCE",
           ceData
         );
         // render template logic
@@ -194,9 +149,6 @@ export default {
         this.inter = "";
         this.ip = "";
         this.mask = "";
-        this.ospf = "";
-        this.network_address = "";
-        this.wildcard_mask = "";
       } catch (error) {
         console.log(error);
       }

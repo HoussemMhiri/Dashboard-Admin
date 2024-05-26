@@ -136,7 +136,7 @@ export default {
       };
       try {
         const { data } = await axios.post(
-          "https://9c5b-197-244-82-237.ngrok-free.app/addSwitch",
+          "https://2a04-197-244-82-237.ngrok-free.app/addSwitch",
           switchData
         );
         // render template logic
