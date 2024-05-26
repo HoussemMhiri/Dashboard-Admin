@@ -90,6 +90,17 @@
           >
         </ul>
       </div>
+      <div class="sec_config">
+        <div class="d-flex all_admin">
+          <i class="bi bi-person-add add_admin"></i>
+          <!--  <h5>Add Admin</h5> -->
+          <router-link :to="{ name: 'register' }" class="router"
+            ><h4 :class="{ 'active-link': isActive('register') }">
+              Add Admin
+            </h4></router-link
+          >
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -98,13 +109,17 @@
 export default {
   methods: {
     isActive(route) {
-      return this.$route.params.id === route;
+      return this.$route.params.id === route || this.$route.name === route;
     },
   },
 };
 </script>
 
 <style scoped>
+.add_admin {
+  font-size: 22px;
+  display: flex;
+}
 .active-link {
   padding-left: 10px;
   color: #ea7b22;
@@ -141,7 +156,7 @@ export default {
   letter-spacing: 0.3px;
 }
 .offcanvas-body {
-  margin: 20px 10px;
+  margin: 10px 10px;
   text-align: left !important;
 }
 
@@ -152,14 +167,12 @@ export default {
 }
 .first_config,
 .sec_config {
-  min-height: 150px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
 }
 
 ul li {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   cursor: pointer;
   font-size: 17px;
   transition: all 0.3s ease-in-out;
@@ -169,12 +182,21 @@ ul li:hover {
   padding-left: 10px;
   color: #ea7b22;
 }
-
+.first_config,
 .sec_config ul {
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 h5 {
   margin-left: 10px;
+}
+h4 {
+  color: white;
+  margin-left: 10px;
+  transition: all 0.3s ease-in-out;
+}
+h4:hover {
+  padding-left: 10px;
+  color: #ea7b22;
 }
 </style>

@@ -1,6 +1,10 @@
 <template>
   <div class="register">
-    <h2>Register</h2>
+    <div class="auth_logo_container">
+      <h1 class="text-center mt-3 heading">Register</h1>
+      <img src="/img/3S.png" alt="" class="imgs" />
+    </div>
+    <!-- <h2>Register</h2> -->
     <form @submit.prevent="handleRegister">
       <div class="mb-3 mt-4">
         <label for="email" class="form-label">Email:</label>
@@ -16,11 +20,11 @@
         />
       </div>
       <button type="submit" class="btn_submit">Register</button>
-
-      <button class="btn_submit">
-        <router-link to="/login">Back To Login</router-link>
-      </button>
     </form>
+    <router-link to="/">
+      <button class="btn_submit">Back To Home</button></router-link
+    >
+
     <p v-if="error" class="text-danger">{{ error }}</p>
   </div>
 </template>
@@ -57,6 +61,18 @@ export default {
 </script>
 
 <style scoped>
+.auth_logo_container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: -20px;
+}
+
+.imgs {
+  width: 150px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 5px;
+}
 .register {
   max-width: 500px;
   margin: auto;

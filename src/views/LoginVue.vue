@@ -34,10 +34,6 @@
         {{ passwordError }}
       </p>
       <button type="submit" class="btn_submit">Login</button>
-      <p class="mt-3">
-        Don't have an account?
-        <router-link to="/register">Register</router-link>
-      </p>
       <p>
         <router-link to="/forgot-password">Forgot Password?</router-link>
       </p>
