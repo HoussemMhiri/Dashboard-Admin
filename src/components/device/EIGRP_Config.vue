@@ -118,7 +118,7 @@ export default {
           "https://2a04-197-244-82-237.ngrok-free.app/addEigrp",
           sendEigrp
         );
-        console.log(data.html);
+
         // render template logic
         const formattedResponse = data.html.replace(
           /\x1B\[[0-9;]*[JKmsu]/g,
@@ -127,7 +127,12 @@ export default {
         this.formattedResponseEIGRP = formattedResponse;
         this.showModal();
         console.log(data.html);
-        /*   this.ospfForm = {}; */
+        this.hostname = "";
+        this.customer = "";
+        this.eigrp = "";
+        this.as = "";
+        this.network_address = "";
+        this.wildcard_mask = "";
       } catch (error) {
         console.log(error);
       }

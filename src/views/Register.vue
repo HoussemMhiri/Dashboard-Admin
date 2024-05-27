@@ -19,6 +19,7 @@
           required
         />
       </div>
+      <p v-if="msg" class="text-success">{{ msg }}</p>
       <button type="submit" class="btn_submit">Add</button>
     </form>
     <router-link to="/">
@@ -39,6 +40,7 @@ export default {
       email: "",
       password: "",
       error: "",
+      msg: "",
     };
   },
   methods: {
@@ -49,9 +51,11 @@ export default {
           this.email,
           this.password
         );
-        console.log(userCredential); // Log userCredential for reference
-        this.$router.push("/login");
-        // Redirect to another page or perform other actions upon successful registration
+        console.log(userCredential);
+
+        this.msg = "Admin added successfully";
+        this.email = "";
+        this.password = "";
       } catch (error) {
         this.error = error.message;
       }
