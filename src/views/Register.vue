@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <div class="auth_logo_container">
-      <h1 class="text-center mt-3 heading">Register</h1>
+      <h1 class="text-center mt-3 heading">Add Admin</h1>
       <img src="/img/3S.png" alt="" class="imgs" />
     </div>
     <!-- <h2>Register</h2> -->
@@ -19,7 +19,7 @@
           required
         />
       </div>
-      <button type="submit" class="btn_submit">Register</button>
+      <button type="submit" class="btn_submit">Add</button>
     </form>
     <router-link to="/">
       <button class="btn_submit">Back To Home</button></router-link

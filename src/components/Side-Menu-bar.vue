@@ -11,7 +11,7 @@
     </div>
     <div class="admin_container">
       <img src="/img/avatar.png" alt="" class="avatar" />
-      <p class="titles">Administrateur</p>
+      <p class="titles">{{ username ? username : "Administrateur" }}</p>
     </div>
     <div class="offcanvas-body">
       <div class="first_config">
@@ -106,7 +106,16 @@
 </template>
 
 <script>
+import { useAppStore } from "../store";
 export default {
+  data() {
+    return {};
+  },
+  computed: {
+    username() {
+      return useAppStore().username;
+    },
+  },
   methods: {
     isActive(route) {
       return this.$route.params.id === route || this.$route.name === route;

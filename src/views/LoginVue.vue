@@ -5,7 +5,18 @@
       <img src="/img/3S.png" alt="" class="imgs" />
     </div>
     <form class="m-auto 0 w-75" @submit.prevent="handleSubmit">
-      <div class="mb-3 mt-5">
+      <div class="mt-5">
+        <label for="exampleFormControlInput0" class="form-label"
+          >Username</label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="exampleFormControlInput0"
+          v-model="username"
+        />
+      </div>
+      <div class="mb-3 mt-3">
         <label for="exampleFormControlInput1" class="form-label">Email</label>
         <input
           type="email"
@@ -15,7 +26,7 @@
           required
         />
       </div>
-      <p class="text-danger">
+      <p v-if="emailError" class="text-danger">
         {{ emailError }}
       </p>
       <div class="mb-3">
@@ -30,7 +41,7 @@
           required
         />
       </div>
-      <p class="text-danger">
+      <p v-if="passwordError" class="text-danger">
         {{ passwordError }}
       </p>
       <button type="submit" class="btn_submit">Login</button>
@@ -44,6 +55,8 @@
 <script>
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useAppStore } from "../store";
+
 export default {
   data() {
     return {
@@ -51,6 +64,7 @@ export default {
       password: "",
       emailError: "",
       passwordError: "",
+      username: "",
     };
   },
   methods: {
@@ -65,6 +79,7 @@ export default {
           this.password
         );
         console.log("User logged in successfully:", userCredential.user);
+        useAppStore().setUsername(this.username);
         this.$router.push("/"); // Redirect to the home page after successful login
       } catch (error) {
         console.error("Login error:", error);
