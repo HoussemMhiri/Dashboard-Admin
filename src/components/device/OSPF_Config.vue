@@ -63,7 +63,7 @@
     </div>
 
     <div class="w-100">
-      <pop-over :postData="postOSPF" />
+      <pop-over :postData="addOSPF" />
     </div>
     <modal :result="formattedResponseOSPF" />
   </form>
@@ -83,7 +83,7 @@ import {
   updateDoc,
   limit,
 } from "firebase/firestore";
-import { db } from "@/firebase"; // Make sure the path to your firebase config is correct
+import { db } from "@/firebase";
 import axios from "axios";
 import Modal from "../reusable/modal.vue";
 import popOver from "../reusable/pop-over.vue";
@@ -105,6 +105,7 @@ export default {
   methods: {
     async addOSPF() {
       try {
+        this.postOSPF();
         let sendOspf = {
           hostname: this.hostname,
           customer: this.customer,

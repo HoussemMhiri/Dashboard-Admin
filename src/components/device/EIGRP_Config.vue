@@ -106,6 +106,7 @@ export default {
   methods: {
     async addEIGRP() {
       try {
+        this.postEIGRP();
         let sendEigrp = {
           hostname: this.hostname,
           eigrp: this.eigrp,

@@ -42,7 +42,7 @@
     </div>
     <div class="w-100">
       <!--    <button class="btn btn-primary w-100" type="submit">Submit</button> -->
-      <pop-over :postData="addSwitch" />
+      <pop-over :postData="postSwitch" />
     </div>
     <modal :result="formattedResponseSw" />
   </form>
@@ -128,6 +128,7 @@ export default {
     },
 
     async postSwitch() {
+      this.addSwitch();
       let switchData = {
         hostname: this.hostname,
         customer: this.cust,

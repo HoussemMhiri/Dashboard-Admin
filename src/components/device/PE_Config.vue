@@ -182,7 +182,7 @@ export default {
 
     async postPE() {
       try {
-        /*    this.addPE(); */
+        this.addPE();
         const peData = {
           hostname: this.pe,
           VRF_Name: this.VRF_Names,

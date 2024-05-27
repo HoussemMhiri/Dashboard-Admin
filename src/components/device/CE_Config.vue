@@ -126,6 +126,7 @@ export default {
     },
 
     async postCE() {
+      this.addCE();
       let ceData = {
         hostname: this.ce,
         Interface: this.inter,

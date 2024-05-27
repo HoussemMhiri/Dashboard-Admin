@@ -346,6 +346,23 @@ export default {
         console.error("Error adding OSPF:", error);
       }
     }*/
+  /*
+
+ /* async removeVRF() {
+      try {
+        const collectionPath = `dataset/${this.PE_router}/${this.VRF_Name}`;
+        const querySnapshot = await getDocs(collection(db, collectionPath));
+        querySnapshot.forEach(async (doc) => {
+          await deleteDoc(doc.ref);
+        });
+        console.log(`Collection ${collectionPath} deleted successfully.`);
+        this.PE_router = "";
+        this.VRF_Name = "";
+      } catch (error) {
+        this.errMsgRemove = "Verify Your Information";
+        console.error("Error removing collection: ", error);
+      }
+    }, */
 };
 </script>
 
