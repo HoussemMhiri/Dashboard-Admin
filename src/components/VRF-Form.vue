@@ -119,6 +119,7 @@ import { db } from "@/firebase";
 import axios from "axios";
 import modal from "./reusable/modal.vue";
 import PopOver from "./reusable/pop-over.vue";
+import { API_BASE_URL } from "../config";
 
 export default {
   components: { modal, PopOver },
@@ -163,7 +164,7 @@ export default {
           rt_import: this.RT_Imports,
         };
         const { data } = await axios.post(
-          "https://2a04-197-244-82-237.ngrok-free.app/addConfig",
+          `${API_BASE_URL}/addConfig`,
           dataToPost
         );
         // render template logic
@@ -261,7 +262,7 @@ export default {
           vrfName: this.VRF_Name,
         };
         const { data } = await axios.post(
-          "https://2a04-197-244-82-237.ngrok-free.app/removeConfig",
+          `${API_BASE_URL}/removeConfig`,
           dataToPost
         );
 

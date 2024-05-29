@@ -87,7 +87,7 @@ import { db } from "@/firebase";
 import axios from "axios";
 import Modal from "../reusable/modal.vue";
 import popOver from "../reusable/pop-over.vue";
-
+import { API_BASE_URL } from "../../config";
 export default {
   components: { popOver, Modal },
   data() {
@@ -114,10 +114,7 @@ export default {
           network_address: this.network_address,
           wildcard_mask: this.wildcard_mask,
         };
-        const { data } = await axios.post(
-          "https://2a04-197-244-82-237.ngrok-free.app/addOspf",
-          sendOspf
-        );
+        const { data } = await axios.post(`${API_BASE_URL}/addOspf`, sendOspf);
         console.log(data);
         // render template logic
         const formattedResponse = data.html.replace(

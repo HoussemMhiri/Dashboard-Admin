@@ -1,4 +1,4 @@
-module.exports = {
+/* module.exports = {
   devServer: {
     proxy: {
       "/api": {
@@ -10,3 +10,4 @@ module.exports = {
     },
   },
 };
+ */

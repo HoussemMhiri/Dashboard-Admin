@@ -95,6 +95,7 @@ import { db } from "@/firebase";
 import axios from "axios";
 import popOver from "../reusable/pop-over.vue";
 import Modal from "../reusable/modal.vue";
+import { API_BASE_URL } from "../../config";
 export default {
   components: { popOver, Modal },
   data() {
@@ -192,10 +193,7 @@ export default {
           Mask: this.mask,
           OSPF: this.ospf,
         };
-        const { data } = await axios.post(
-          "https://2a04-197-244-82-237.ngrok-free.app/addPE",
-          peData
-        );
+        const { data } = await axios.post(`${API_BASE_URL}/addPE`, peData);
 
         // render template logic
         const formattedResponse = data.html.replace(

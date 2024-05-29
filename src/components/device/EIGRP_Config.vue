@@ -88,6 +88,7 @@ import {
   limit,
 } from "firebase/firestore";
 import { db } from "@/firebase";
+import { API_BASE_URL } from "../../config";
 export default {
   components: { popOver, Modal },
   data() {
@@ -115,7 +116,7 @@ export default {
           wildcard_mask: this.wildcard_mask,
         };
         const { data } = await axios.post(
-          "https://2a04-197-244-82-237.ngrok-free.app/addEigrp",
+          `${API_BASE_URL}/addEigrp`,
           sendEigrp
         );
 
