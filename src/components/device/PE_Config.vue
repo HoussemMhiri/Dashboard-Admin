@@ -236,7 +236,7 @@ export default {
           VLAN: this.vl,
           IP_Address: this.ip,
           Mask: this.mask,
-          OSPF: this.ospf,
+          ...this.pickInternalRoutes()
         };
         const { data } = await axios.post(`${API_BASE_URL}/addPE`, peData);
 
@@ -255,6 +255,7 @@ export default {
         this.ip = "";
         this.mask = "";
         this.ospf = "";
+        this.eigrp = "";
       } catch (error) {
         console.log(error);
       }

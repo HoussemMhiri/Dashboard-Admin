@@ -64,7 +64,7 @@
     </div>
 
     <div class="w-100">
-      <pop-over :postData="postEIGRP" />
+      <pop-over :postData="addEIGRP" />
     </div>
     <modal :result="formattedResponseEIGRP" />
   </form>
