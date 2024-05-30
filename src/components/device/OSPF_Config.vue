@@ -149,7 +149,7 @@ export default {
         // Get a reference to the dataset collection
         const datasetRef = collection(db, "dataset");
 
-        // Get a reference to the router document
+       /*  // Get a reference to the router document
         const routerDocRef = doc(datasetRef, this.hostname);
 
         // Check if the router document exists
@@ -192,7 +192,7 @@ export default {
         ospfArray.push(this.ospf);
 
         // Update the OSPF field in the customer document
-        await updateDoc(customerDocRef, { ospf: ospfArray });
+        await updateDoc(customerDocRef, { ospf: ospfArray }); */
 
         // Create a reference to the "ospf" document
         const ospfDocRef = doc(datasetRef, "ospf");
@@ -200,10 +200,11 @@ export default {
         await setDoc(ospfDocRef, {});
 
         // Create a reference to the subcollection under the "ospf" document with the name of the OSPF value
-        const ospfSubcollectionRef = collection(ospfDocRef, this.ospf);
+        const ospfSubcollectionRef = collection(ospfDocRef, this.customer);
 
         // Set the OSPF subcollection document with the provided fields
         await addDoc(ospfSubcollectionRef, {
+          ospf: this.ospf,
           area: this.area,
           network_address: this.network_address,
           wildcard_mask: this.wildcard_mask,
@@ -212,6 +213,13 @@ export default {
         console.log(
           `OSPF ${this.ospf} added successfully for customer ${this.customer}`
         );
+        // Clear the form fields
+        this.hostname = "";
+        this.customer = "";
+        this.ospf = "";
+        this.area = "";
+        this.network_address = "";
+        this.wildcard_mask = "";
       } catch (error) {
         console.error("Error adding OSPF:", error);
       }

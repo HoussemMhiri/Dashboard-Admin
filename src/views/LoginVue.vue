@@ -29,7 +29,7 @@
       <p v-if="emailError" class="text-danger">
         {{ emailError }}
       </p>
-      <div class="mb-3">
+      <div >
         <label for="exampleFormControlInput2" class="form-label"
           >Password</label
         >

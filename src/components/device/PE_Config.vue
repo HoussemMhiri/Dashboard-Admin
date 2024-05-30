@@ -62,7 +62,7 @@
         v-model="mask"
       />
     </div>
-    <div class="mb-3">
+    <!-- <div class="mb-3">
       <label for="exampleFormControlInput7" class="form-label">OSPF:</label>
       <input
         type="text"
@@ -70,6 +70,26 @@
         id="exampleFormControlInput7"
         v-model="ospf"
       />
+    </div> -->
+    <div class="mb-3">
+       <drop @toggle_bol="toggleBol"/> 
+       <div v-if="bol" >
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput7"
+        v-model="ospf"
+      />
+    </div>
+       <div v-else >
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput8"
+        v-model="eigrp"
+      />
+    </div>
+       
     </div>
     <div class="w-100">
       <!--      <button class="btn btn-primary w-100">Submit</button> -->
@@ -96,10 +116,12 @@ import axios from "axios";
 import popOver from "../reusable/pop-over.vue";
 import Modal from "../reusable/modal.vue";
 import { API_BASE_URL } from "../../config";
+import Drop from '../reusable/drop.vue';
 export default {
-  components: { popOver, Modal },
+  components: { popOver, Modal, Drop },
   data() {
     return {
+      bol:true,
       //
       formattedResponsePE: null,
       pe: "",
@@ -109,12 +131,34 @@ export default {
       ip: "",
       mask: "",
       ospf: "",
+      eigrp:"",
       errMsgCust: "",
       errMsgRouter: "",
+ 
     };
   },
 
   methods: {
+    toggleBol(bolean){
+     return this.bol= bolean
+    },
+
+
+    pickInternalRoutes(){
+      if (this.bol) {
+        return {
+          ospf:this.ospf
+        } 
+       
+      } else{
+        return {
+          eigrp:this.eigrp
+        }
+      
+      }
+    },
+
+
     // if router and customer exists (the two is the condition) , add the info (except the customer and router) to that customer in that router
     // else error: please verify your inforamtion
 
@@ -148,7 +192,7 @@ export default {
               vlan: this.vl,
               ip_address: this.ip,
               mask: this.mask,
-              ospf: this.ospf,
+              ...this.pickInternalRoutes()
             });
 
             console.log(
@@ -163,6 +207,7 @@ export default {
             this.ip = "";
             this.mask = "";
             this.ospf = "";
+            this.eigrp = "";
             this.errMsgCust = "";
             this.errMsgRouter = "";
           } else {
@@ -221,6 +266,8 @@ export default {
       $("#resultModal").modal("show");
     },
   },
+
+  
 };
 </script>
 

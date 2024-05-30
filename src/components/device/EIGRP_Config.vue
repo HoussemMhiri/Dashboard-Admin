@@ -152,7 +152,7 @@ export default {
         // Get a reference to the dataset collection
         const datasetRef = collection(db, "dataset");
 
-        // Get a reference to the router document
+     /*    // Get a reference to the router document
         const routerDocRef = doc(datasetRef, this.hostname);
 
         // Check if the router document exists
@@ -196,17 +196,18 @@ export default {
 
         // Update the OSPF field in the customer document
         await updateDoc(customerDocRef, { eigrp: eigrpArray });
-
+ */
         // Create a reference to the "ospf" document
         const eigrpDocRef = doc(datasetRef, "eigrp");
 
         await setDoc(eigrpDocRef, {});
 
         // Create a reference to the subcollection under the "eigrp" document with the name of the EIGRP value
-        const eigrpSubcollectionRef = collection(eigrpDocRef, this.eigrp);
+        const eigrpSubcollectionRef = collection(eigrpDocRef, this.customer);
 
         // Set the EIGRP subcollection document with the provided fields
         await addDoc(eigrpSubcollectionRef, {
+          eigrp: this.eigrp,
           as: this.as,
           network_address: this.network_address,
           wildcard_mask: this.wildcard_mask,
@@ -215,6 +216,12 @@ export default {
         console.log(
           `EIGRP ${this.eigrp} added successfully for customer ${this.customer}`
         );
+        this.hostname = "";
+        this.customer = "";
+        this.eigrp = "";
+        this.as = "";
+        this.network_address = "";
+        this.wildcard_mask = "";
       } catch (error) {
         console.error("Error adding EIGRP:", error);
       }
