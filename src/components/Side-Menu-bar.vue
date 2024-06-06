@@ -67,33 +67,10 @@
           >
         </ul>
       </div>
-      <div class="sec_config">
-        <div class="d-flex">
-          <i class="bi bi-arrows-move"></i>
-          <h5>Internal Routing</h5>
-        </div>
 
-        <ul>
-          <router-link
-            :to="{ name: 'Device_Config', params: { id: 'OSPF_Config' } }"
-            class="router"
-            ><li :class="{ 'active-link': isActive('OSPF_Config') }">
-              OSPF
-            </li></router-link
-          >
-          <router-link
-            :to="{ name: 'Device_Config', params: { id: 'EIGRP_Config' } }"
-            class="router"
-            ><li :class="{ 'active-link': isActive('EIGRP_Config') }">
-              EIGRP
-            </li></router-link
-          >
-        </ul>
-      </div>
       <div class="sec_config">
         <div class="d-flex all_admin">
           <i class="bi bi-person-add add_admin"></i>
-          <!--  <h5>Add Admin</h5> -->
           <router-link :to="{ name: 'register' }" class="router"
             ><h4 :class="{ 'active-link': isActive('register') }">
               Add Admin

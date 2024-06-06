@@ -43,6 +43,46 @@
         v-model="mask"
       />
     </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput14" class="form-label">OSPF:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput14"
+        v-model="ospf"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput14" class="form-label">Area:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput14"
+        v-model="area"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput14" class="form-label"
+        >Network Address:</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput14"
+        v-model="network_address"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput14" class="form-label"
+        >Wildcard Mask:</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput14"
+        v-model="wildcard_mask"
+      />
+    </div>
 
     <div class="w-100">
       <!--  <button class="btn btn-primary w-100">Submit</button> -->
@@ -69,6 +109,10 @@ export default {
       ip: "",
       mask: "",
       errMsgCE: "",
+      ospf: "",
+      area: "",
+      network_address: "",
+      wildcard_mask: "",
     };
   },
   methods: {
@@ -91,9 +135,23 @@ export default {
                 interface: this.inter,
                 ip_address: this.ip,
                 mask: this.mask,
+                ospf: this.ospf,
+                area: this.area,
+                network_address: this.network_address,
+                wildcard_mask: this.wildcard_mask,
               },
               { merge: true }
             );
+            this.errMsgCE = "";
+            // Clear the form fields
+            this.ce = "";
+            this.inter = "";
+            this.ip = "";
+            this.mask = "";
+            this.ospf = "";
+            this.area = "";
+            this.network_address = "";
+            this.wildcard_mask = "";
             console.log("Document updated successfully.");
           } else {
             // Return an error if the IP address does not match
@@ -102,11 +160,16 @@ export default {
           }
         } else {
           // Create a new document if it does not exist
+          this.errMsgCE = "";
           await setDoc(ceRef, {
             ce_router: this.ce,
             interface: this.inter,
             ip_address: this.ip,
             mask: this.mask,
+            ospf: this.ospf,
+            area: this.area,
+            network_address: this.network_address,
+            wildcard_mask: this.wildcard_mask,
           });
           console.log("Document created successfully.");
           // Clear the form fields
@@ -114,6 +177,10 @@ export default {
           this.inter = "";
           this.ip = "";
           this.mask = "";
+          this.ospf = "";
+          this.area = "";
+          this.network_address = "";
+          this.wildcard_mask = "";
         }
       } catch (error) {
         console.error("Error adding/updating document: ", error);
@@ -133,6 +200,10 @@ export default {
         Interface: this.inter,
         addr: this.ip,
         Mask: this.mask,
+        ospf: this.ospf,
+        area: this.area,
+        network_address: this.network_address,
+        wildcard_mask: this.wildcard_mask,
       };
       try {
         const { data } = await axios.post(`${API_BASE_URL}/addCE`, ceData);
@@ -148,6 +219,10 @@ export default {
         this.inter = "";
         this.ip = "";
         this.mask = "";
+        this.ospf = "";
+        this.area = "";
+        this.network_address = "";
+        this.wildcard_mask = "";
       } catch (error) {
         console.log(error);
       }

@@ -9,8 +9,6 @@
 
 <script>
 import CE_Config from "./device/CE_Config.vue";
-import EIGRP_Config from "./device/EIGRP_Config.vue";
-import OSPF_Config from "./device/OSPF_Config.vue";
 import PE_Config from "./device/PE_Config.vue";
 import Switch_Config from "./device/Switch_Config.vue";
 export default {
@@ -36,10 +34,7 @@ export default {
           return PE_Config;
         case "Switch_Config":
           return Switch_Config;
-        case "OSPF_Config":
-          return OSPF_Config;
-        case "EIGRP_Config":
-          return EIGRP_Config;
+
         case "CE_Config":
         default:
           return CE_Config;
