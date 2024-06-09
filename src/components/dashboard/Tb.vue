@@ -37,6 +37,7 @@ export default {
         keys.push(
           dataKeys.filter(
             (key) =>
+              key !== "area" &&
               key !== "ce_router" &&
               key !== "network_address" &&
               key !== "wildcard_mask"

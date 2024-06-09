@@ -10,7 +10,9 @@
 <script>
 import CE_Config from "./device/CE_Config.vue";
 import PE_Config from "./device/PE_Config.vue";
+import Ping from './device/Ping.vue';
 import Switch_Config from "./device/Switch_Config.vue";
+import Validation from './device/Validation.vue';
 export default {
   components: { PE_Config, Switch_Config, CE_Config },
   data() {
@@ -34,7 +36,10 @@ export default {
           return PE_Config;
         case "Switch_Config":
           return Switch_Config;
-
+          case "Ping":
+          return Ping;
+          case "Validation":
+          return Validation;
         case "CE_Config":
         default:
           return CE_Config;

@@ -14,6 +14,8 @@
       <p class="titles">{{ username ? username : "Administrateur" }}</p>
     </div>
     <div class="offcanvas-body">
+      <div class="L3vpn" >
+        <h3>L3vpn config</h3>
       <div class="first_config">
         <div class="d-flex">
           <i class="bi bi-tools"></i>
@@ -67,8 +69,28 @@
           >
         </ul>
       </div>
+    </div>
+    <div class="Test">
+      <h3>Test</h3>
+     
 
-      <div class="sec_config">
+        <ul>
+          <router-link
+            :to="{ name: 'Device_Config', params: { id: 'Ping' } }"
+            class="router"
+            ><li :class="{ 'active-link': isActive('Ping') }">
+Ping            </li></router-link
+          >
+          <router-link
+            :to="{ name: 'Device_Config', params: { id: 'Validation' } }"
+            class="router"
+            ><li :class="{ 'active-link': isActive('Validation') }">
+Validation            </li></router-link
+          >
+        </ul>
+      </div>
+    </div>
+        <div class="sec_config">
         <div class="d-flex all_admin">
           <i class="bi bi-person-add add_admin"></i>
           <router-link :to="{ name: 'register' }" class="router"
@@ -79,7 +101,7 @@
         </div>
       </div>
     </div>
-  </div>
+  
 </template>
 
 <script>
