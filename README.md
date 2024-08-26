@@ -17,6 +17,9 @@ This project is an admin dashboard that automates the deployment and configurati
 - **Pinia:** For state management within Vue.js.
 - **Chart.js:** For data visualization.
 
+## Link To See The Project:
+- https://drive.google.com/file/d/1xGRFh7t7uNyloLFnRwEjmrvypeS2zdM3/view?usp=sharing
+
 ## Installation
 
 ### Prerequisites
