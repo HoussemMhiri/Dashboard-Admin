@@ -1,4 +1,4 @@
-# MPLS/IP Backbone Admin Dashboard
+# Admin Dashboard
 
 This project is an admin dashboard that automates the deployment and configuration of network services related to MPLS/IP backbone. The frontend and user interface aspects of this project were developed using Vue.js, with Firebase providing the backend services.
 
